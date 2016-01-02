@@ -82,6 +82,9 @@ gulp.task('watch', function () {
     gulp.watch('src/**/*.ts', ['build']);
     gulp.watch('tests/**/*.ts', ['buildTests']);
     gulp.watch('src/styles/**/*.less', ['less']);
+    gulp.watch("src/public/**/*.html").on('change', browserSync.reload);
+    gulp.watch("src/public/**/*.js").on('change', browserSync.reload);
+    gulp.watch("src/public/**/*.css").on('change', browserSync.stream);    
 }); 
 
 gulp.task('buildAll', ['build', 'buildTests', 'less']);
