@@ -1,4 +1,3 @@
-
 import assert = require('assert');
 
 describe('Array', function(){
@@ -9,5 +8,3 @@ describe('Array', function(){
     });
   });
 });
-
-__dirname
