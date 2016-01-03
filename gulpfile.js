@@ -95,7 +95,9 @@ gulp.task('watch', function () {
 });
 
 gulp.task('watch-test', () => {
-    gulp.watch(['tests/**/*.spec.ts', 'src/*.ts', 'src/routes/**/*.ts', ], ['test'])
+    gulp.watch('src/**/*.ts', ['build']);
+    gulp.watch('tests/**/*.ts', ['buildTests']);
+    gulp.watch(['tests/**/*.spec.js', 'src/*.js', 'src/routes/**/*.js', ], ['test'])
 });
 
 gulp.task('buildAll', ['build', 'buildTests', 'less']);
