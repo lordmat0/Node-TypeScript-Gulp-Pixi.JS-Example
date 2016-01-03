@@ -6,6 +6,8 @@ var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
 var cp = require('child_process');
 var tsb = require('gulp-tsb');
+var config = require('./gulpfile.conf');
+var concat = require('gulp-concat');
 
 
 // compile less files from the ./styles folder
@@ -18,7 +20,6 @@ gulp.task('less', function () {
         .pipe(gulp.dest('./src/public/stylesheets'));
 });
 
-
 // run mocha tests in the ./tests folder
 gulp.task('test', function () {
 
@@ -28,10 +29,10 @@ gulp.task('test', function () {
 });
 
 // run browser-sync on for client changes
-gulp.task('browser-sync', ['nodemon', 'watch'], function () {
+gulp.task('browser-sync', ['concat-vendor', 'nodemon', 'watch'], function () {
     browserSync.init(null, {
         proxy: "http://localhost:3000",
-        files: ["src/public/**/*.*", "src/views/**/*.*"],
+        files: ["src/public/**/*.*"],
         browser: "chromium",
         port: 7000,
     });
@@ -58,11 +59,18 @@ gulp.task('nodemon', function (cb) {
     });
 });
 
+gulp.task('concat-vendor', function () {
+    console.log(config)
+    return gulp.src(config.js)
+        .pipe(concat('vendor.js'))
+        .pipe(gulp.dest('src/public/'));
+});
+
 // TypeScript build for /src folder, pipes in .d.ts files from typings folder 
 var tsConfigSrc = tsb.create('src/tsconfig.json');
 gulp.task('build', function () {
     return gulp.src(['typings/**/*.ts', 'src/**/*.ts'])
-        .pipe(tsConfigSrc()) 
+        .pipe(tsConfigSrc())
         .pipe(gulp.dest('src'));
 });
 
@@ -72,7 +80,7 @@ var tsConfigTests = tsb.create('tests/tsconfig.json');
 gulp.task('buildTests', function () {
     // pipe in all necessary files
     return gulp.src(['typings/**/*.ts', 'tests/**/*.ts', 'src/tsd.d.ts'])
-        .pipe(tsConfigTests()) 
+        .pipe(tsConfigTests())
         .pipe(gulp.dest('tests'));
 });
 
@@ -84,8 +92,8 @@ gulp.task('watch', function () {
     gulp.watch('src/styles/**/*.less', ['less']);
     gulp.watch("src/public/**/*.html").on('change', browserSync.reload);
     gulp.watch("src/public/**/*.js").on('change', browserSync.reload);
-    gulp.watch("src/public/**/*.css").on('change', browserSync.stream);    
-}); 
+    gulp.watch("src/public/**/*.css").on('change', browserSync.stream);
+});
 
 gulp.task('buildAll', ['build', 'buildTests', 'less']);
 gulp.task('default', ['browser-sync']);
