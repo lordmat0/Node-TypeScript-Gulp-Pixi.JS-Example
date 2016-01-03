@@ -20,16 +20,10 @@
     <script src="vendor.js" type="text/javascript"></script>
 
     <script>
-        // set our baseURL reference path
-  System.config({
-    baseURL: '/scripts'
-  });
-
-  // loads /app/main.js
-  System.import('main.js');
+        System.defaultJSExtensions = true;
+        System.import('/scripts/main');
     </script>
-
-    //todo set-up es6 pollyfills if needed?
+    
 </body>
 
 </html>

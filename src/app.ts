@@ -39,10 +39,10 @@ if (app.get('env') === 'development') {
   app.use((error: any, req, res, next) => {
     res.status(error['status'] || 500);
     
-    res.send({
+    res.json({
       message: error.message,
       error
-    });
+    })
     
   });
 }
@@ -52,7 +52,7 @@ if (app.get('env') === 'development') {
 app.use((error: any, req, res, next) => {
   res.status(error['status'] || 500);
   
-  res.send({
+  res.json({
     message: error.message,
     error: {}
   });

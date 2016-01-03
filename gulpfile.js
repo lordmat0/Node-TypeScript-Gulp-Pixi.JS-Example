@@ -60,7 +60,6 @@ gulp.task('nodemon', function (cb) {
 });
 
 gulp.task('concat-vendor', function () {
-    console.log(config)
     return gulp.src(config.js)
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest('src/public/'));
