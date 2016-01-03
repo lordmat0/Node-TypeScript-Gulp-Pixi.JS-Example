@@ -8,10 +8,6 @@ import cookieParser = require('cookie-parser'); // this module doesn't use the E
 
 const app: express.Express = express();
 
-// view engine setup
-//app.set('views', join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));

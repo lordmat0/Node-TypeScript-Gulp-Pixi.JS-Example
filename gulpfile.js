@@ -23,7 +23,7 @@ gulp.task('less', function () {
 // run mocha tests in the ./tests folder
 gulp.task('test', function () {
 
-    return gulp.src('./tests/*.spec.js', { read: false })
+    return gulp.src('./tests/**/*.spec.js', { read: false })
     // gulp-mocha needs filepaths so you can't have any plugins before it 
         .pipe(mocha());
 });
@@ -95,7 +95,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('watch-test', () => {
-    gulp.watch('tests/**/*.spec.ts', ['test'])
+    gulp.watch(['tests/**/*.spec.ts', 'src/*.ts', 'src/routes/**/*.ts', ], ['test'])
 });
 
 gulp.task('buildAll', ['build', 'buildTests', 'less']);
