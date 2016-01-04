@@ -1,34 +1,33 @@
-
-import assert = require('assert');
-
-describe('Array', function(){
-  describe('#indexOf()', function(){
-    it('should return -1 when the value is not present', function(){
-      assert.equal(-1, [1,2,3].indexOf(5));
-      assert.equal(-1, [1,2,3].indexOf(0));
-    });
-  });
-});
-
-
-//import assert = require('assert');
-require('should');
-require('assert');
-
+let should = require('chai').should();
+let request = require('supertest');
 
 describe('Testing frameworks', () => {
 
-    describe('should library', () => {
-        it('should have "should" defined', () => {
-            //expect()
+    describe('chai library', () => {
+        it('should have chai.should defined', () => {
+
+            if (!should) {
+                throw Error('should is not defined!');
+            }
+            should.exist(should);
         });
-        
+
         it('should work correctly', () => {
             'test'.should.equal('test');
         });
     });
-    
-    
+
+    describe('supertest library', () => {
+
+        it('should have request defined', () => {
+            should.exist(request);
+        });
+
+        it('should be a function', () => {
+            request.should.be.an('function');
+        });
+
+    });
 
 });
 

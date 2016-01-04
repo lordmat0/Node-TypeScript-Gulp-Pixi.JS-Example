@@ -1,18 +1,15 @@
-import assert = require('assert');
-//require('should');
-
 describe('Index Route', () => {
 
     let request = require('supertest');
-    let server;
+    let app;
     beforeEach(function() {
-        server = require('../../src/app').default;
+        app = require('../../src/app').default;
     });
 
     describe('Path /', () => {
 
         it('should responds with Content-Type: text/html; charset=UTF-8', (done) => {
-            request(server)
+            request(app)
                 .get('/')
                 .expect('Content-Type', 'text/html; charset=UTF-8')
                 .end(function(err, res) {
@@ -22,7 +19,7 @@ describe('Index Route', () => {
         });
 
         it('should responds with 200', (done) => {
-            request(server)
+            request(app)
                 .get('/')
                 .expect(200, done);
         });
@@ -32,7 +29,7 @@ describe('Index Route', () => {
     describe('Path /does_not_exist', () => {
 
         it('should responds with Content-Type: application/json; charset=utf-8', (done) => {
-            request(server)
+            request(app)
                 .get('/does_not_exist')
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, res) {
@@ -42,7 +39,7 @@ describe('Index Route', () => {
         });
 
         it('should respond with 404', (done) => {
-            request(server)
+            request(app)
                 .get('/does_not_exist')
                 .expect(404, done);
         });
