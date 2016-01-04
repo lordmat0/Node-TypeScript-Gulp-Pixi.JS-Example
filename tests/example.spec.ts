@@ -1,3 +1,4 @@
+
 import assert = require('assert');
 
 describe('Array', function(){
@@ -8,3 +9,26 @@ describe('Array', function(){
     });
   });
 });
+
+
+//import assert = require('assert');
+require('should');
+require('assert');
+
+
+describe('Testing frameworks', () => {
+
+    describe('should library', () => {
+        it('should have "should" defined', () => {
+            //expect()
+        });
+        
+        it('should work correctly', () => {
+            'test'.should.equal('test');
+        });
+    });
+    
+    
+
+});
+
