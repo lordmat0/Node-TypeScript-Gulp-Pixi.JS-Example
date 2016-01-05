@@ -8,3 +8,4 @@ var span = document.createElement('span');
 span.textContent = 'new Test().num ' + new Test().num;
 
 document.body.appendChild(span);
+

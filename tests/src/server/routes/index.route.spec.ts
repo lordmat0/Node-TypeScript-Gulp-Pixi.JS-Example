@@ -1,13 +1,15 @@
+import {Express} from 'express';
+
 describe('Index Route', () => {
 
-    let request = require('supertest');
-    let app;
+    let request;
+    let app: Express;
     beforeEach(function() {
-        app = require('../../src/app').default;
+        app = require('../../../../src/server/app').default;
+        request = require('supertest');
     });
 
     describe('Path /', () => {
-
         it('should responds with Content-Type: text/html; charset=UTF-8', (done) => {
             request(app)
                 .get('/')
@@ -23,7 +25,7 @@ describe('Index Route', () => {
                 .get('/')
                 .expect(200, done);
         });
-        
+
     });
 
     describe('Path /does_not_exist', () => {

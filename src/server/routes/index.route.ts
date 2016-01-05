@@ -6,7 +6,7 @@ const index = Router();
 /* GET home page. */
 index.get('/', function(req, res, next) {
     console.log('__dirname from /', __dirname);
-    res.sendFile('index.html', { root: join(__dirname, '../../client/pages') });
+    res.sendFile('index.html', { root: join(__dirname, '../../client/') });
     //res.render('index', { title: 'Visual Studio Code!' });
 });
 
