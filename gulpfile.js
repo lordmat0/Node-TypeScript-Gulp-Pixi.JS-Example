@@ -13,11 +13,12 @@ var concat = require('gulp-concat');
 // compile less files from the ./styles folder
 // into css files to the ./public/stylesheets folder
 gulp.task('less', function () {
-    return gulp.src('./src/styles/**/*.less')
+    return gulp.src('./src/server/styles/**/*.less')
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
         }))
-        .pipe(gulp.dest('./src/public/stylesheets'));
+        // TODO add a note stating that these are generated
+        .pipe(gulp.dest('./src/client/stylesheets'));
 });
 
 // run mocha tests in the ./tests folder
@@ -32,7 +33,7 @@ gulp.task('test', function () {
 gulp.task('browser-sync', ['concat-vendor', 'nodemon', 'watch'], function () {
     browserSync.init(null, {
         proxy: "http://localhost:3000",
-        files: ["src/public/**/*.*"],
+        files: ["src/client/**/*.*"],
         browser: "chromium",
         port: 7000,
     });
@@ -43,8 +44,8 @@ gulp.task('nodemon', function (cb) {
     var started = false;
 
     return nodemon({
-        script: 'src/www.js',
-        watch: ['src/*.js']
+        script: 'src/server/www.js',
+        watch: ['src/server/**/*.js']
     }).on('start', function () {
         if (!started) {
             cb();
@@ -62,7 +63,8 @@ gulp.task('nodemon', function (cb) {
 gulp.task('concat-vendor', function () {
     return gulp.src(config.js)
         .pipe(concat('vendor.js'))
-        .pipe(gulp.dest('src/public/'));
+        // TODO add a note stating that these are generated
+        .pipe(gulp.dest('src/client/'));
 });
 
 // TypeScript build for /src folder, pipes in .d.ts files from typings folder 
@@ -88,16 +90,16 @@ gulp.task('buildTests', function () {
 gulp.task('watch', function () {
     gulp.watch('src/**/*.ts', ['build']);
     gulp.watch('tests/**/*.ts', ['buildTests']);
-    gulp.watch('src/styles/**/*.less', ['less']);
-    gulp.watch("src/public/**/*.html").on('change', browserSync.reload);
-    gulp.watch("src/public/**/*.js").on('change', browserSync.reload);
-    gulp.watch("src/public/**/*.css").on('change', browserSync.stream);
+    gulp.watch('src/server/styles/**/*.less', ['less']);
+    gulp.watch("src/client/**/*.html").on('change', browserSync.reload);
+    gulp.watch("src/client/**/*.js").on('change', browserSync.reload);
+    gulp.watch("src/client/**/*.css").on('change', browserSync.stream);
 });
 
 gulp.task('watch-test', () => {
     gulp.watch('src/**/*.ts', ['build']);
     gulp.watch('tests/**/*.ts', ['buildTests']);
-    gulp.watch(['tests/**/*.spec.js', 'src/*.js', 'src/routes/**/*.js', ], ['test'])
+    gulp.watch(['tests/**/*.js', 'src/**/*.js' ], ['test'])
 });
 
 gulp.task('buildAll', ['build', 'buildTests', 'less']);

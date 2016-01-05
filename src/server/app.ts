@@ -14,7 +14,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(join(__dirname, 'public')));
+console.log(__dirname);
+app.use(express.static(join(__dirname, '../client/')));
 
 app.use('/', index);
 app.use('/users', users);
