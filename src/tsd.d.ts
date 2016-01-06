@@ -9,4 +9,6 @@
 /// <reference path="../typings/supertest/supertest.d.ts" />
 /// <reference path="../typings/chai/chai.d.ts" />
 /// <reference path="../typings/mocha/mocha.d.ts" />
+/// <reference path="../typings/socket.io/socket.io.d.ts" />
+/// <reference path="../typings/socket.io-client/socket.io-client.d.ts" />
 

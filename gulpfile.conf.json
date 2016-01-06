@@ -1,6 +1,7 @@
 {
     "js" : [
         "./node_modules/systemjs/dist/system.js",
-        "./node_modules/pixi.js/bin/pixi.js"
+        "./node_modules/pixi.js/bin/pixi.min.js",
+        "./node_modules/socket.io-client/socket.io.js"
     ]
 }

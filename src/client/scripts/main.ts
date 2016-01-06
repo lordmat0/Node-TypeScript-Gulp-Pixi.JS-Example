@@ -9,3 +9,6 @@ span.textContent = 'new Test().num ' + new Test().num;
 
 document.body.appendChild(span);
 
+var socket = io();
+
+ 

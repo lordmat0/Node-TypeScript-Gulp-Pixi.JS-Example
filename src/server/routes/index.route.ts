@@ -3,16 +3,16 @@ import {join} from 'path';
 
 const index = Router();
 
+const indexPath = join(__dirname, '../../client/');
+
 /* GET home page. */
 index.get('/', function(req, res, next) {
     console.log('__dirname from /', __dirname);
-    res.sendFile('index.html', { root: join(__dirname, '../../client/') });
-    //res.render('index', { title: 'Visual Studio Code!' });
+    res.sendFile('index.html', { root: indexPath });
 });
 
-/* GET Quick Start. */
-index.get('/quickstart', function(req, res, next) {
-    res.render('quickstart');
+index.get('/health', function(req, res, next) {
+    res.json({health: 'health', status: 200})
 });
 
 export default index;

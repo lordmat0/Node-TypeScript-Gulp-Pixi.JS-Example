@@ -1,6 +1,8 @@
 import app from './app';
-import debugModule = require('debug');
-import http = require('http');
+import * as debugModule from 'debug';
+import * as http from 'http';
+import * as socketio from 'socket.io';
+import socket from './socket';
 
 const debug = debugModule('node-express-typescript:server');
 
@@ -13,6 +15,8 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+socket.io.attach(server);
 
 /**
  * Normalize a port into a number, string, or false.

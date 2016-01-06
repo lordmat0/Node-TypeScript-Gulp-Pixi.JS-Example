@@ -102,5 +102,5 @@ gulp.task('watch-test', () => {
     gulp.watch(['tests/**/*.js', 'src/**/*.js' ], ['test'])
 });
 
-gulp.task('buildAll', ['build', 'buildTests', 'less']);
+gulp.task('buildAll', ['concat-vendor','build', 'buildTests', 'less']);
 gulp.task('default', ['browser-sync']);
