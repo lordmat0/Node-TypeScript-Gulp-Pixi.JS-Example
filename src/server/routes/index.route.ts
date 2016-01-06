@@ -5,14 +5,22 @@ const index = Router();
 
 const indexPath = join(__dirname, '../../client/');
 
-/* GET home page. */
-index.get('/', function(req, res, next) {
-    console.log('__dirname from /', __dirname);
-    res.sendFile('index.html', { root: indexPath });
-});
+function init(io: SocketIO.Server) {
+    /* GET home page. */
+    index.get('/', function(req, res, next) {
+        console.log('__dirname from /', __dirname);
+        res.sendFile('index.html', { root: indexPath });
+    });
 
-index.get('/health', function(req, res, next) {
-    res.json({health: 'health', status: 200})
-});
+    index.get('/health', function(req, res, next) {
+        res.json({ health: 'health', status: 200 })
+    });
 
-export default index;
+    // io.on('connection', (socket) => {
+    //     console.log('connected index');
+    // });
+    
+    return index;
+}
+
+export default init;

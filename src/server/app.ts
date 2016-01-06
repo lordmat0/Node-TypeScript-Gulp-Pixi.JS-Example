@@ -19,7 +19,7 @@ console.log(__dirname);
 app.use(express.static(join(__dirname, '../client/')));
 
 
-app.use('/', index);
+app.use('/', index(socket.io));
 app.use('/game', game(socket.io));
 
 // catch 404 and forward to error handler

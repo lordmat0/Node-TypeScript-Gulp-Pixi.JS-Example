@@ -10,7 +10,7 @@ function init(io: SocketIO.Server) {
     });
     
     io.on('connection', (socket) => {
-      console.log('connected');
+      console.log('connected game', socket.id);
         
     })
     return game;

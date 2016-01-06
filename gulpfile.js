@@ -35,7 +35,7 @@ gulp.task('browser-sync', ['concat-vendor', 'nodemon', 'watch'], function () {
         proxy: "http://localhost:3000",
         files: ["src/client/**/*.*"],
         browser: "chromium",
-        port: 7000,
+        port: 7000
     });
 });
 
