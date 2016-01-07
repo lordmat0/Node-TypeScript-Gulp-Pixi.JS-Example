@@ -17,7 +17,7 @@ gulp.task('less', function () {
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
         }))
-        // TODO add a note stating that these are generated
+    // TODO add a note stating that these are generated
         .pipe(gulp.dest('./src/client/stylesheets'));
 });
 
@@ -63,7 +63,7 @@ gulp.task('nodemon', function (cb) {
 gulp.task('concat-vendor', function () {
     return gulp.src(config.js)
         .pipe(concat('vendor.js'))
-        // TODO add a note stating that these are generated
+    // TODO add a note stating that these are generated
         .pipe(gulp.dest('src/client/'));
 });
 
@@ -99,8 +99,8 @@ gulp.task('watch', function () {
 gulp.task('watch-test', () => {
     gulp.watch('src/**/*.ts', ['build']);
     gulp.watch('tests/**/*.ts', ['buildTests']);
-    gulp.watch(['tests/**/*.js', 'src/**/*.js' ], ['test'])
+    gulp.watch(['tests/**/*.js', 'src/**/*.js'], ['test'])
 });
 
-gulp.task('buildAll', ['concat-vendor','build', 'buildTests', 'less']);
+gulp.task('buildAll', ['concat-vendor', 'build', 'buildTests', 'less']);
 gulp.task('default', ['browser-sync']);
