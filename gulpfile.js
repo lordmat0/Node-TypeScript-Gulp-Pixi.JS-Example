@@ -5,10 +5,10 @@ var mocha = require('gulp-mocha');
 var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
 var cp = require('child_process');
-var tsb = require('gulp-tsb');
+var ts = require('gulp-typescript');
 var config = require('./gulpfile.conf');
 var concat = require('gulp-concat');
-
+var tslint = require("gulp-tslint");
 
 // compile less files from the ./styles folder
 // into css files to the ./public/stylesheets folder
@@ -68,21 +68,31 @@ gulp.task('concat-vendor', function () {
 });
 
 // TypeScript build for /src folder, pipes in .d.ts files from typings folder 
-var tsConfigSrc = tsb.create('src/tsconfig.json');
+//var tsConfigSrc = tsb.create('src/tsconfig.json');
+var tsConfigSrc = ts.createProject('src/tsconfig.json');
 gulp.task('build', function () {
-    return gulp.src(['typings/**/*.ts', 'src/**/*.ts'])
-        .pipe(tsConfigSrc())
+    return gulp.src(['typings/**/*.ts', ])
+        .pipe(ts(tsConfigSrc))
         .pipe(gulp.dest('src'));
 });
 
 // TypeScript build for /tests folder, pipes in .d.ts files from typings folder
 // as well as the src/tsd.d.ts which is referenced by tests/tsd.d.ts 
-var tsConfigTests = tsb.create('tests/tsconfig.json');
+var tsConfigTests = ts.createProject('tests/tsconfig.json');
 gulp.task('buildTests', function () {
     // pipe in all necessary files
     return gulp.src(['typings/**/*.ts', 'tests/**/*.ts', 'src/tsd.d.ts'])
-        .pipe(tsConfigTests())
+        .pipe(ts(tsConfigTests))
         .pipe(gulp.dest('tests'));
+});
+
+// tslint hte project
+gulp.task('tsLint', () => {
+    return gulp.src(['src/**/*.ts', 'tests/**/*.ts', 'src/tsd.d.ts'])
+        .pipe(tslint())
+        .pipe(tslint.report("prose", {
+            emitError: false
+        }))
 });
 
 // watch for any TypeScript or LESS file changes
@@ -102,5 +112,5 @@ gulp.task('watch-test', () => {
     gulp.watch(['tests/**/*.js', 'src/**/*.js'], ['test'])
 });
 
-gulp.task('buildAll', ['concat-vendor', 'build', 'buildTests', 'less']);
+gulp.task('buildAll', ['concat-vendor','build', 'buildTests', 'less', 'tsLint']);
 gulp.task('default', ['browser-sync']);

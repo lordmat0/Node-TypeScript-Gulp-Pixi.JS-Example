@@ -14,6 +14,7 @@ function init(io: SocketIO.Server) {
 
         socket.on('event', (data) => {
             console.log(socket.id, ': emit event with:', data);
+            
         });
         
         socket.on('disconnect', () => {
