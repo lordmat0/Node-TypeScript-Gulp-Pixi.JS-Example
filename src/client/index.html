@@ -19,15 +19,16 @@
 
     <script>
         System.defaultJSExtensions = true;
-               
+        
+        System.baseURL = 'vendor/';
         System.config({
             map: {
-                'pixi.js': 'vendor/pixi.min.js',
-                'socket.io': 'vendor/socket.io'
+                'pixi.js': 'pixi.min.js',
+                'socket.io': 'socket.io'
             }
         });
         
-        System.import('scripts/main');
+        System.import('../scripts/main');
     </script>
 
 </head>
