@@ -1,17 +1,19 @@
+import * as PIXI from 'pixi.js';
 import {Test} from './test';
 
+console.log(PIXI);
 
-let span = document.createElement('span');
+// Create the renderer
+var renderer = PIXI.autoDetectRenderer(512, 512);
 
-span.textContent = 'new Test().num ' + new Test().num;
+let canvas = document.getElementById('canvas');
+canvas.appendChild(renderer.view);
 
-document.body.appendChild(span);
 
-let socket = io();
+// Create a container object called the `stage`
+var stage = new PIXI.Container();
 
-let callCount = 0;
+// Tell the `renderer` to `render` the `stage`
+renderer.render(stage);
 
-setInterval(() => {
-    console.log('event');
-    socket.emit('event', ++callCount);
-}, 1000);
+console.log(new Test().num);

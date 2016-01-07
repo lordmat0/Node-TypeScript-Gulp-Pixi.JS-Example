@@ -18,7 +18,7 @@ gulp.task('less', function () {
             paths: [path.join(__dirname, 'less', 'includes')]
         }))
     // TODO add a note stating that these are generated
-        .pipe(gulp.dest('./src/client/stylesheets'));
+        .pipe(gulp.dest('src/client/css'));
 });
 
 // run mocha tests in the ./tests folder
@@ -30,7 +30,7 @@ gulp.task('test', function () {
 });
 
 // run browser-sync on for client changes
-gulp.task('browser-sync', ['concat-vendor', 'nodemon', 'watch'], function () {
+gulp.task('browser-sync', ['copy-vendor', 'nodemon', 'watch'], function () {
     browserSync.init(null, {
         proxy: "http://localhost:3000",
         files: ["src/client/**/*.*"],
@@ -60,11 +60,9 @@ gulp.task('nodemon', function (cb) {
     });
 });
 
-gulp.task('concat-vendor', function () {
+gulp.task('copy-vendor', function () {
     return gulp.src(config.js)
-        .pipe(concat('vendor.js'))
-    // TODO add a note stating that these are generated
-        .pipe(gulp.dest('src/client/'));
+        .pipe(gulp.dest('src/client/vendor/'));
 });
 
 // TypeScript build for /src folder, pipes in .d.ts files from typings folder 
@@ -112,5 +110,5 @@ gulp.task('watch-test', () => {
     gulp.watch(['tests/**/*.js', 'src/**/*.js'], ['test'])
 });
 
-gulp.task('buildAll', ['concat-vendor','build', 'buildTests', 'less', 'tsLint']);
+gulp.task('buildAll', ['copy-vendor','build', 'buildTests', 'less', 'tsLint']);
 gulp.task('default', ['browser-sync']);
