@@ -10,7 +10,7 @@ import socket from './socket';
 const app: express.Express = express();
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,9 +24,13 @@ app.use('/game', game(socket.io));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  var err = new Error('Not Found');
-  err['status'] = 404;
-  next(err);
+    // look up node Error    
+    let error = {
+        err: new Error('Not found'),
+        status: 404
+    };
+    
+    next(error);
 });
 
 // error handlers
@@ -35,33 +39,29 @@ app.use((req, res, next) => {
 // will print stacktrace
 if (app.get('env') === 'development') {
 
-  app.use((error: any, req, res, next) => {
-    res.status(error['status'] || 500);
-    
-    res.json({
-      message: error.message,
-      error
-    })
-    
-  });
+    app.use((error: any, req, res, next) => {
+        res.status(error.status || 500);
+
+        res.json({
+            error,            
+            message: error.err.message
+        });
+
+    });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use((error: any, req, res, next) => {
-  res.status(error['status'] || 500);
-  
-  res.json({
-    message: error.message,
-    error: {}
-  });
-  return null;
+    res.status(error.status || 500);
+
+    res.json({
+        error: '',        
+        message: error.message
+    });
+    return null;
 });
 
 
 
 export default app;
-
-interface MyApp extends express.Express{
-   
-}

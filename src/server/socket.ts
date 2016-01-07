@@ -1,14 +1,14 @@
 import * as socketio from 'socket.io';
 
 interface Socket {
-    io: SocketIO.Server
+    io: SocketIO.Server;
 }
 
-var socket: Socket = {
+let socket: Socket = {
     public io: null
 };
 
-if(!socket.io){
+if (!socket.io) {
     socket.io = socketio();
 }
 

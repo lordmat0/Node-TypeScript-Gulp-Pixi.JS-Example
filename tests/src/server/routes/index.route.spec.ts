@@ -15,7 +15,9 @@ describe('Index Route', () => {
                 .get('/')
                 .expect('Content-Type', 'text/html; charset=UTF-8')
                 .end(function(err, res) {
-                    if (err) return done(err);
+                    if (err) {
+                        return done(err);
+                    }
                     done();
                 });
         });
@@ -35,7 +37,9 @@ describe('Index Route', () => {
                 .get('/does_not_exist')
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, res) {
-                    if (err) return done(err);
+                    if (err) {
+                        return done(err);
+                    }
                     done();
                 });
         });

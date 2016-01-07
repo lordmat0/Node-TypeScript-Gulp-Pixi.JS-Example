@@ -13,7 +13,7 @@ function init(io: SocketIO.Server) {
     });
 
     index.get('/health', function(req, res, next) {
-        res.json({ health: 'health', status: 200 })
+        res.json({ health: 'health', status: 200 });
     });
 
     // io.on('connection', (socket) => {

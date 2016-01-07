@@ -10,15 +10,14 @@ function init(io: SocketIO.Server) {
     });
 
     io.on('connection', (socket) => {
-        console.log(socket.id,'connected');
+        console.log(socket.id, 'connected');
 
         socket.on('event', (data) => {
             console.log(socket.id, ': emit event with:', data);
-            
         });
-        
+
         socket.on('disconnect', () => {
-            console.log(socket.id, 'disconnected') 
+            console.log(socket.id, 'disconnected');
         });
     });
 
