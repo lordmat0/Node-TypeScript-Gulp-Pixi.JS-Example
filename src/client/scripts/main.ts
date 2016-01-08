@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {Test} from './test';
+import {Game} from './game';
 
 // Create the renderer
 var renderer = PIXI.autoDetectRenderer(512, 512);
@@ -7,20 +7,15 @@ var renderer = PIXI.autoDetectRenderer(512, 512);
 let canvas = document.getElementById('canvas');
 canvas.appendChild(renderer.view);
 
+let game = new Game();
+game.init();
 
-// Create a container object called the `stage`
-var stage = new PIXI.Container();
+gameLoop();
 
+function gameLoop() {
+    requestAnimationFrame(gameLoop);
 
-let rectangle = new PIXI.Graphics();
-rectangle.lineStyle(4, 0xFF3300, 1);
-rectangle.beginFill(0x66CCFF);
-rectangle.drawRect(0, 0, 32, 32);
-rectangle.endFill();
-rectangle.x = 170;
-rectangle.y = 170;
-stage.addChild(rectangle);
+    game.state();
 
-// Tell the `renderer` to `render` the `stage`
-renderer.render(stage);
-
+    renderer.render(game.stage);
+}
