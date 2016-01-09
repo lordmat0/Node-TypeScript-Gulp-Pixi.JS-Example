@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import {Game} from './game';
 
 // Create the renderer
-var renderer = PIXI.autoDetectRenderer(512, 512);
+let renderer = PIXI.autoDetectRenderer(512, 512);
 
 let canvas = document.getElementById('canvas');
 canvas.appendChild(renderer.view);

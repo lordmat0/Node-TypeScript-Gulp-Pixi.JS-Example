@@ -69,7 +69,7 @@ gulp.task('copy-vendor', function () {
 //var tsConfigSrc = tsb.create('src/tsconfig.json');
 var tsConfigSrc = ts.createProject('src/tsconfig.json');
 gulp.task('build', function () {
-    return gulp.src(['typings/**/*.ts', ])
+    return gulp.src(['typings/**/*.ts', 'src/**/*.ts' ])
         .pipe(ts(tsConfigSrc))
         .pipe(gulp.dest('src'));
 });
