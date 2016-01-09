@@ -4,6 +4,8 @@
 Client Side
 * Pixi.js
 * Systemjs
+* Browser-sync
+* gulp-watch
 
 Server Side
 * Node.js
@@ -13,6 +15,7 @@ Server Side
 Build
 * Typescript
 * TSLint
+* SASS
 
 Testing
 * Mocha
@@ -20,3 +23,7 @@ Testing
 * Supertest
 
 Would be useful for baseing a game!
+
+TODO:
+More tests for server side
+Tests for client side
