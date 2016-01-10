@@ -1,8 +1,8 @@
 import {Rectangle} from './graphics/rectangle';
 
 export class Game {
-    
-    baseContainer: PIXI.Container;    
+
+    baseContainer: PIXI.Container;
 
     private rectangle: Rectangle;
 
