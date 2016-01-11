@@ -17,15 +17,17 @@ gulp.task('less', function () {
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
         }))
-    // TODO add a note stating that these are generated
+        // TODO add a note stating that these are generated
         .pipe(gulp.dest('src/client/css'));
 });
 
 // run mocha tests in the ./tests folder
 gulp.task('test', function () {
 
-    return gulp.src('./tests/**/*.spec.js', { read: false })
-    // gulp-mocha needs filepaths so you can't have any plugins before it 
+    return gulp.src('./tests/**/*.spec.js', {
+            read: false
+        })
+        // gulp-mocha needs filepaths so you can't have any plugins before it
         .pipe(mocha());
 });
 
@@ -56,7 +58,7 @@ gulp.task('nodemon', function (cb) {
             browserSync.reload({
                 stream: false
             });
-        }, 500);  // browserSync reload delay
+        }, 500); // browserSync reload delay
     });
 });
 
@@ -65,17 +67,17 @@ gulp.task('copy-vendor', function () {
         .pipe(gulp.dest('src/client/vendor/'));
 });
 
-// TypeScript build for /src folder, pipes in .d.ts files from typings folder 
+// TypeScript build for /src folder, pipes in .d.ts files from typings folder
 //var tsConfigSrc = tsb.create('src/tsconfig.json');
 var tsConfigSrc = ts.createProject('src/tsconfig.json');
 gulp.task('build', function () {
-    return gulp.src(['typings/**/*.ts', 'src/**/*.ts' ])
+    return gulp.src(['typings/**/*.ts', 'src/**/*.ts'])
         .pipe(ts(tsConfigSrc))
         .pipe(gulp.dest('src'));
 });
 
 // TypeScript build for /tests folder, pipes in .d.ts files from typings folder
-// as well as the src/tsd.d.ts which is referenced by tests/tsd.d.ts 
+// as well as the src/tsd.d.ts which is referenced by tests/tsd.d.ts
 var tsConfigTests = ts.createProject('tests/tsconfig.json');
 gulp.task('buildTests', function () {
     // pipe in all necessary files
@@ -110,5 +112,5 @@ gulp.task('watch-test', () => {
     gulp.watch(['tests/**/*.js', 'src/**/*.js'], ['test'])
 });
 
-gulp.task('buildAll', ['copy-vendor','build', 'buildTests', 'less', 'tsLint']);
+gulp.task('buildAll', ['copy-vendor', 'build', 'buildTests', 'less', 'tsLint', 'test']);
 gulp.task('default', ['browser-sync']);
