@@ -27,3 +27,5 @@ Would be useful for baseing a game!
 TODO:
 More tests for server side
 Tests for client side
+
+[![Build Status](https://travis-ci.org/lordmat0/Node-TypeScript-Gulp-Pixi.JS-Example.svg?branch=master)](https://travis-ci.org/lordmat0/Node-TypeScript-Gulp-Pixi.JS-Example)
