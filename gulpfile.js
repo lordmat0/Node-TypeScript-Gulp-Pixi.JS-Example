@@ -22,14 +22,15 @@ gulp.task('less', function () {
 });
 
 // run mocha tests in the ./tests folder
-gulp.task('test', function () {
+gulp.task('test', test);
 
+function test() {
     return gulp.src('./tests/**/*.spec.js', {
             read: false
         })
         // gulp-mocha needs filepaths so you can't have any plugins before it
         .pipe(mocha());
-});
+}
 
 // run browser-sync on for client changes
 gulp.task('browser-sync', ['copy-vendor', 'nodemon', 'watch'], function () {
@@ -112,5 +113,5 @@ gulp.task('watch-test', () => {
     gulp.watch(['tests/**/*.js', 'src/**/*.js'], ['test'])
 });
 
-gulp.task('buildAll', ['copy-vendor', 'build', 'buildTests', 'less', 'tsLint', 'test']);
+gulp.task('buildAll', ['copy-vendor', 'build', 'buildTests', 'less', 'tsLint'], test);
 gulp.task('default', ['browser-sync']);
