@@ -24,12 +24,12 @@ app.use('/game', game(socket.io));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    // look up node Error    
+    // look up node Error
     let error = {
         err: new Error('Not found'),
         status: 404
     };
-    
+
     next(error);
 });
 
@@ -43,7 +43,7 @@ if (app.get('env') === 'development') {
         res.status(error.status || 500);
 
         res.json({
-            error,            
+            error,
             message: error.err.message
         });
 
@@ -56,7 +56,7 @@ app.use((error: any, req, res, next) => {
     res.status(error.status || 500);
 
     res.json({
-        error: '',        
+        error: '',
         message: error.message
     });
     return null;

@@ -9,9 +9,9 @@ var ts = require('gulp-typescript');
 var config = require('./gulpfile.conf');
 var concat = require('gulp-concat');
 var tslint = require("gulp-tslint");
+var del = require('del');
+var sourcemaps = require('gulp-sourcemaps');
 
-// compile less files from the ./styles folder
-// into css files to the ./public/stylesheets folder
 gulp.task('less', function () {
     return gulp.src('./src/server/styles/**/*.less')
         .pipe(less({
@@ -31,6 +31,16 @@ function test() {
         // gulp-mocha needs filepaths so you can't have any plugins before it
         .pipe(mocha());
 }
+
+gulp.task('clean', (cb) => {
+    del(['src/**/*.js', 'src/**/*.js.map',
+        'src/**/*.css', 'tests/**/*.js', 'tests/**/*.js.map',
+        '!src', '!tests'
+    ]).then(paths => {
+        console.log('Deleted files and folders:\n', paths.join('\n'));
+        cb();
+    });
+});
 
 // run browser-sync on for client changes
 gulp.task('browser-sync', ['copy-vendor', 'nodemon', 'watch'], function () {
@@ -73,9 +83,29 @@ gulp.task('copy-vendor', function () {
 var tsConfigSrc = ts.createProject('src/tsconfig.json');
 gulp.task('build', function () {
     return gulp.src(['typings/**/*.ts', 'src/**/*.ts'])
+        .pipe(sourcemaps.init())
         .pipe(ts(tsConfigSrc))
+        .pipe(sourcemaps.write('../src/'))
         .pipe(gulp.dest('src'));
 });
+
+// gulp.task('build', ['buildServer', 'buildClient']);
+//
+// gulp.task('buildServer', function () {
+//     return gulp.src(['typings/**/*.ts', 'src/server/**/*.ts'])
+//         .pipe(sourcemaps.init())
+//         .pipe(ts(tsConfigSrc))
+//         .pipe(sourcemaps.write('../../src/server/source'))
+//         .pipe(gulp.dest('src/server'));
+// });
+//
+// gulp.task('buildClient', function () {
+//     return gulp.src(['typings/**/*.ts', 'src/client/**/*.ts'])
+//         .pipe(sourcemaps.init())
+//         .pipe(ts(tsConfigSrc))
+//         .pipe(sourcemaps.write('../../src/client/source'))
+//         .pipe(gulp.dest('src/client'));
+// });
 
 // TypeScript build for /tests folder, pipes in .d.ts files from typings folder
 // as well as the src/tsd.d.ts which is referenced by tests/tsd.d.ts
