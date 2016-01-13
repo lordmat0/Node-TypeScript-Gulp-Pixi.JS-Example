@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import {Game} from './game';
-import {KeyboardHandler} from "./util/keyboard-handler";
+import {KeyboardHandler} from './util/keyboard-handler';
+import {KeyboardCode} from './util/keyboard-code';
 
 // Create the renderer
 let renderer = PIXI.autoDetectRenderer(512, 512);
@@ -13,7 +14,11 @@ game.init();
 
 gameLoop();
 
-let KeyboardHandler = new KeyboardHandler(37);
+let keyboardHandler = new KeyboardHandler(KeyboardCode.TAB);
+
+keyboardHandler.press = () => {
+    console.log('left pressed');
+};
 
 function gameLoop() {
     requestAnimationFrame(gameLoop);
