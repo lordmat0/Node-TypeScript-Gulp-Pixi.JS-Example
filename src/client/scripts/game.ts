@@ -21,44 +21,40 @@ export class Game {
 
         left.press = function() {
             this.rectangle.vx = -5;
-            this.rectangle.vy = 0;
         }.bind(this);
 
         left.release = function() {
-            if (!right.isDown && this.rectangle.vy === 0) {
+            if (!right.isDown) {
                 this.rectangle.vx = 0;
             }
         }.bind(this);
 
         up.press = function() {
             this.rectangle.vy = -5;
-            this.rectangle.vx = 0;
         }.bind(this);
 
         up.release = function() {
-            if (!down.isDown && this.rectangle.vx === 0) {
+            if (!down.isDown) {
                 this.rectangle.vy = 0;
             }
         }.bind(this);
 
         right.press = function() {
             this.rectangle.vx = 5;
-            this.rectangle.vy = 0;
         }.bind(this);
 
         right.release = function() {
-            if (!left.isDown && this.rectangle.vy === 0) {
+            if (!left.isDown) {
                 this.rectangle.vx = 0;
             }
         }.bind(this);
 
         down.press = function() {
             this.rectangle.vy = 5;
-            this.rectangle.vx = 0;
         }.bind(this);
 
         down.release = function() {
-            if (!up.isDown && this.rectangle.vx === 0) {
+            if (!up.isDown) {
                 this.rectangle.vy = 0;
             }
         }.bind(this);
