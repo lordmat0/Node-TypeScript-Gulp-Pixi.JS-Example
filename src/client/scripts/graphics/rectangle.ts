@@ -1,4 +1,8 @@
 export class Rectangle extends PIXI.Graphics {
+
+    vx = 0;
+    vy = 0;
+
     constructor() {
         super();
         this.lineStyle(4, 0xFF3300, 1);

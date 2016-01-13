@@ -1,12 +1,13 @@
+import {KeyboardCode} from './keyboard-code';
+
 export class KeyboardHandler {
 
     press: Function;
     release: Function;
+    isDown = false;
+    isUp = true;
 
-    private isDown = false;
-    private isUp = true;
-
-    constructor(private keycode: number) {
+    constructor(private keycode: KeyboardCode) {
         window.addEventListener('keydown', this.downHandler.bind(this), false);
         window.addEventListener('keyup', this.upHandler.bind(this), false);
     }
