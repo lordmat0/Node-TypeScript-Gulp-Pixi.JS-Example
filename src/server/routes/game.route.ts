@@ -13,7 +13,7 @@ function init(io: SocketIO.Server) {
     io.on('connection', (socket) => {
         console.log(socket.id, 'connection');
 
-        io.sockets.emit('new-square', socket.id);
+        socket.broadcast.emit('new-square', socket.id);
 
         socket.on('player-movement', (data: Movement) => {
             data.id = socket.id;
@@ -23,7 +23,7 @@ function init(io: SocketIO.Server) {
 
         socket.on('disconnect', () => {
             console.log(socket.id, 'disconnect');
-            io.sockets.emit('square-deleted', socket.id);
+            socket.broadcast.emit('square-deleted', socket.id);
         });
     });
 
