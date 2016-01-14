@@ -11,14 +11,19 @@ function init(io: SocketIO.Server) {
     });
 
     io.on('connection', (socket) => {
-        console.log(socket.id, 'connected');
+        console.log(socket.id, 'connection');
 
-        socket.on('movement', (data: Movement) => {
-            console.log(socket.id, ': emit event with:', data);
+        io.sockets.emit('new-square', socket.id);
+
+        socket.on('player-movement', (data: Movement) => {
+            data.id = socket.id;
+            console.log(data);
+            io.sockets.emit('square-moved', data);
         });
 
         socket.on('disconnect', () => {
-            console.log(socket.id, 'disconnected');
+            console.log(socket.id, 'disconnect');
+            io.sockets.emit('square-deleted', socket.id);
         });
     });
 

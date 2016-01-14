@@ -1,8 +1,9 @@
 import {KeyboardHandler} from '../util/keyboard-handler';
 import {KeyboardCode} from '../util/keyboard-code';
 
-export class Rectangle extends PIXI.Graphics {
+export class Square extends PIXI.Graphics {
 
+    id: string;
     vx = 0;
     vy = 0;
 
