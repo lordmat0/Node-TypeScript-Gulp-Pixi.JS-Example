@@ -1,68 +1,41 @@
 import {Rectangle} from './graphics/rectangle';
-import {KeyboardHandler} from './util/keyboard-handler';
-import {KeyboardCode} from './util/keyboard-code';
+import {Movement} from '../../shared/movement';
+import * as io from 'socket.io-client';
 
 export class Game {
 
     baseContainer: PIXI.Container;
 
     private rectangle: Rectangle;
+    private socket: SocketIOClient.Socket;
+    private lastMovement: Movement = {
+        x: -1,
+        y: -1
+    };
 
     init() {
-        this.rectangle = new Rectangle();
+        this.socket = io();
+
+        this.rectangle = new Rectangle(true);
 
         this.baseContainer = new PIXI.Container();
         this.baseContainer.addChild(this.rectangle);
-
-        let left = new KeyboardHandler(KeyboardCode.LEFT);
-        let up = new KeyboardHandler(KeyboardCode.UP);
-        let right = new KeyboardHandler(KeyboardCode.RIGHT);
-        let down = new KeyboardHandler(KeyboardCode.DOWN);
-
-        left.press = function() {
-            this.rectangle.vx = -5;
-        }.bind(this);
-
-        left.release = function() {
-            if (!right.isDown) {
-                this.rectangle.vx = 0;
-            }
-        }.bind(this);
-
-        up.press = function() {
-            this.rectangle.vy = -5;
-        }.bind(this);
-
-        up.release = function() {
-            if (!down.isDown) {
-                this.rectangle.vy = 0;
-            }
-        }.bind(this);
-
-        right.press = function() {
-            this.rectangle.vx = 5;
-        }.bind(this);
-
-        right.release = function() {
-            if (!left.isDown) {
-                this.rectangle.vx = 0;
-            }
-        }.bind(this);
-
-        down.press = function() {
-            this.rectangle.vy = 5;
-        }.bind(this);
-
-        down.release = function() {
-            if (!up.isDown) {
-                this.rectangle.vy = 0;
-            }
-        }.bind(this);
     }
 
     state() {
         this.rectangle.x += this.rectangle.vx;
         this.rectangle.y += this.rectangle.vy;
+
+        let movement: Movement = {
+            x: this.rectangle.x,
+            y: this.rectangle.y
+        };
+
+        if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y) {
+            this.socket.emit('movement', movement);
+        }
+
+        this.lastMovement = movement;
     }
 
     get stage(): PIXI.Container {
