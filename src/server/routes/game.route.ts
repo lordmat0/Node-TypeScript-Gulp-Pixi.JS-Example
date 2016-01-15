@@ -22,8 +22,8 @@ function init(io: SocketIO.Server) {
 
         let square: Square = {
             id: socket.id,
-            x: 5,
-            y: 5
+            x: -50,
+            y: -50
         };
 
         squares[socket.id] = square;
@@ -31,9 +31,13 @@ function init(io: SocketIO.Server) {
         socket.broadcast.emit('new-square', square);
 
         socket.on('player-movement', (data: Square) => {
-            data.id = socket.id;
-            console.log(data);
-            io.sockets.emit('square-moved', data);
+            let squareItem = squares[socket.id];
+
+            squareItem.x = data.x;
+            squareItem.y = data.y;
+
+            console.log(squareItem);
+            io.sockets.emit('square-moved', squareItem);
         });
 
         socket.on('disconnect', () => {
