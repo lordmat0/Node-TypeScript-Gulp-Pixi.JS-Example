@@ -1,4 +1,4 @@
-export interface Movement {
+export interface Square {
     id?: string;
     x: number;
     y: number;

@@ -1,7 +1,8 @@
 import {KeyboardHandler} from '../util/keyboard-handler';
 import {KeyboardCode} from '../util/keyboard-code';
+import {Square} from '../../../shared/square';
 
-export class Square extends PIXI.Graphics {
+export class SquareGraphic extends PIXI.Graphics implements Square {
 
     id: string;
     vx = 0;

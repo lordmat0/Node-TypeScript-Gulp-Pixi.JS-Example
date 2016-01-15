@@ -1,9 +1,9 @@
-import {Square} from './graphics/square';
-import {Movement} from '../../shared/movement';
+import {SquareGraphic} from './graphics/square-graphic';
+import {Square} from '../../shared/square';
 import * as io from 'socket.io-client';
 
 interface SquareMap {
-    [name: string]: Square;
+    [name: string]: SquareGraphic;
 }
 
 export class Game {
@@ -11,9 +11,9 @@ export class Game {
     baseContainer: PIXI.Container;
 
     private otherSquares: SquareMap = {};
-    private playerSquare: Square;
+    private playerSquare: SquareGraphic;
     private socket: SocketIOClient.Socket;
-    private lastMovement: Movement = {
+    private lastMovement: Square = {
         x: -1,
         y: -1
     };
@@ -21,38 +21,66 @@ export class Game {
     init() {
         this.socket = io();
 
-        this.socket.on('new-square', (id: string) => {
-            let square = new Square(false);
-            square.x = -50;
-            square.y = -50;
-            square.id = id;
+        let otherSquares = this.otherSquares;
 
-            this.otherSquares[id] = square;
-            this.baseContainer.addChild(square);
+        this.socket.on('new-square', (square: Square) => {
+            let squareGraphic = new SquareGraphic(false);
+            squareGraphic.x = square.x;
+            squareGraphic.y = square.y;
+            squareGraphic.id = square.id;
+
+            otherSquares[square.id] = squareGraphic;
+            this.baseContainer.addChild(squareGraphic);
         });
 
-        this.socket.on('square-moved', (data: Movement) => {
-            let square = this.otherSquares[data.id];
+        this.socket.on('square-moved', (square: Square) => {
+            let squareGraphic = otherSquares[square.id];
 
-            console.log('otherSquares', this.otherSquares);
+            console.log('otherSquares', otherSquares);
 
-            if (square) {
+            if (squareGraphic) {
                 console.log('square', square.id, square.x, square.y);
 
-                square.x = data.x;
-                square.y = data.y;
+                squareGraphic.x = square.x;
+                squareGraphic.y = square.y;
             }
         });
 
         this.socket.on('square-deleted', (id: string) => {
-            let square = this.otherSquares[id];
+            let square = otherSquares[id];
             if (square) {
                 this.baseContainer.removeChild(square);
-                delete this.otherSquares[id];
+                delete otherSquares[id];
             }
         });
 
-        this.playerSquare = new Square(true);
+        this.socket.on('square-list', (squares: Square[]) => {
+
+            // Should be empty anyway, but just in case
+            for (let i in otherSquares) {
+                if (otherSquares.hasOwnProperty(i)) {
+                    this.baseContainer.removeChild(otherSquares[i]);
+                    delete otherSquares[i];
+                }
+            }
+
+            for (let id in squares) {
+                if (squares.hasOwnProperty(id)) {
+                    let square = squares[id];
+                    let squareGraphic = new SquareGraphic(false);
+                    squareGraphic.x = squares[id].x;
+                    squareGraphic.y = squares[id].y;
+                    squareGraphic.id = id;
+
+                    this.baseContainer.addChild(squareGraphic);
+
+                    otherSquares[square.id] = squareGraphic;
+                }
+            }
+
+        });
+
+        this.playerSquare = new SquareGraphic(true);
 
         this.baseContainer = new PIXI.Container();
         this.baseContainer.addChild(this.playerSquare);
@@ -62,7 +90,7 @@ export class Game {
         this.playerSquare.x += this.playerSquare.vx;
         this.playerSquare.y += this.playerSquare.vy;
 
-        let movement: Movement = {
+        let movement: Square = {
             x: this.playerSquare.x,
             y: this.playerSquare.y
         };

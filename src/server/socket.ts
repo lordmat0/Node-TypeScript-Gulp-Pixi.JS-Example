@@ -5,7 +5,7 @@ interface Socket {
 }
 
 let socket: Socket = {
-    public io: null
+    io: null
 };
 
 if (!socket.io) {
