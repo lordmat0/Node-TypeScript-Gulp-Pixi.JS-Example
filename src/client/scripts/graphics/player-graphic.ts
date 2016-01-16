@@ -1,8 +1,7 @@
 import {KeyboardHandler} from '../util/keyboard-handler';
 import {KeyboardCode} from '../util/keyboard-code';
-import {Square} from '../../../shared/square';
 
-export class SquareGraphic extends PIXI.Graphics implements Square {
+export class PlayerGraphic extends PIXI.Graphics {
 
     id: string;
     vx = 0;
@@ -21,8 +20,17 @@ export class SquareGraphic extends PIXI.Graphics implements Square {
     }
 
     private initShape(): void {
-        this.lineStyle(4, 0xFF3300, 1);
-        this.beginFill(0x66CCFF);
+
+        let lineStyle = 0xFF3300;
+        let fillColor = 0x66CCFF;
+        if (this.player) {
+            lineStyle = 0x66CCFF;
+            fillColor = 0x7F9A65;
+        }
+
+        this.lineStyle(4, lineStyle, 1);
+        this.beginFill(fillColor);
+
         this.drawRect(0, 0, 32, 32);
         this.endFill();
         this.x = 170;

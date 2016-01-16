@@ -1,11 +1,7 @@
 import {Router} from 'express';
-import {Square} from '../../shared/square';
+import {PlayerMovement} from '../../shared/player-movement';
 
 const game = Router();
-
-interface SquareMap {
-    [name: string]: Square;
-}
 
 function init(io: SocketIO.Server) {
 
@@ -14,13 +10,13 @@ function init(io: SocketIO.Server) {
         res.send('respond with a resource');
     });
 
-    let squares: SquareMap = {};
+    let squares: { [id: string]: PlayerMovement } = {};
 
     io.on('connection', (socket) => {
         console.log(socket.id, 'connection');
         socket.emit('square-list', squares);
 
-        let square: Square = {
+        let square: PlayerMovement = {
             id: socket.id,
             x: -50,
             y: -50
@@ -30,7 +26,7 @@ function init(io: SocketIO.Server) {
 
         socket.broadcast.emit('new-square', square);
 
-        socket.on('player-movement', (data: Square) => {
+        socket.on('player-movement', (data: PlayerMovement) => {
             let squareItem = squares[socket.id];
 
             squareItem.x = data.x;

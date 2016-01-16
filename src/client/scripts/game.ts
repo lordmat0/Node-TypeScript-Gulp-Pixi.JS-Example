@@ -1,19 +1,15 @@
-import {SquareGraphic} from './graphics/square-graphic';
-import {Square} from '../../shared/square';
+import {PlayerGraphic} from './graphics/player-graphic';
+import {PlayerMovement} from '../../shared/player-movement';
 import * as io from 'socket.io-client';
-
-interface SquareMap {
-    [name: string]: SquareGraphic;
-}
 
 export class Game {
 
     baseContainer: PIXI.Container;
 
-    private otherSquares: SquareMap = {};
-    private playerSquare: SquareGraphic;
+    private otherSquares: { [id: string]: PlayerGraphic } = {};
+    private playerSquare: PlayerGraphic;
     private socket: SocketIOClient.Socket;
-    private lastMovement: Square = {
+    private lastMovement: PlayerMovement = {
         x: -1,
         y: -1
     };
@@ -23,8 +19,8 @@ export class Game {
 
         let otherSquares = this.otherSquares;
 
-        this.socket.on('new-square', (square: Square) => {
-            let squareGraphic = new SquareGraphic(false);
+        this.socket.on('new-square', (square: PlayerMovement) => {
+            let squareGraphic = new PlayerGraphic(false);
             squareGraphic.x = square.x;
             squareGraphic.y = square.y;
             squareGraphic.id = square.id;
@@ -33,7 +29,7 @@ export class Game {
             this.baseContainer.addChild(squareGraphic);
         });
 
-        this.socket.on('square-moved', (square: Square) => {
+        this.socket.on('square-moved', (square: PlayerMovement) => {
             let squareGraphic = otherSquares[square.id];
 
             console.log('otherSquares', otherSquares);
@@ -54,7 +50,7 @@ export class Game {
             }
         });
 
-        this.socket.on('square-list', (squares: Square[]) => {
+        this.socket.on('square-list', (squares: PlayerMovement[]) => {
 
             // Should be empty anyway, but just in case
             for (let i in otherSquares) {
@@ -67,7 +63,7 @@ export class Game {
             for (let id in squares) {
                 if (squares.hasOwnProperty(id)) {
                     let square = squares[id];
-                    let squareGraphic = new SquareGraphic(false);
+                    let squareGraphic = new PlayerGraphic(false);
                     squareGraphic.x = squares[id].x;
                     squareGraphic.y = squares[id].y;
                     squareGraphic.id = id;
@@ -80,7 +76,7 @@ export class Game {
 
         });
 
-        this.playerSquare = new SquareGraphic(true);
+        this.playerSquare = new PlayerGraphic(true);
 
         this.baseContainer = new PIXI.Container();
         this.baseContainer.addChild(this.playerSquare);
@@ -90,7 +86,7 @@ export class Game {
         this.playerSquare.x += this.playerSquare.vx;
         this.playerSquare.y += this.playerSquare.vy;
 
-        let movement: Square = {
+        let movement: PlayerMovement = {
             x: this.playerSquare.x,
             y: this.playerSquare.y
         };
