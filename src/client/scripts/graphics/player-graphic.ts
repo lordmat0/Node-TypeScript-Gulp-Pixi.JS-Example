@@ -43,8 +43,6 @@ export class PlayerGraphic extends PIXI.Graphics {
         let right = new KeyboardHandler(KeyboardCode.RIGHT);
         let down = new KeyboardHandler(KeyboardCode.DOWN);
 
-        console.log(this);
-
         left.press = function() {
             this.vx = -5;
         }.bind(this);

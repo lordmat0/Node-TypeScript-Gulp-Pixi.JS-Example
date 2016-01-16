@@ -1,5 +1,8 @@
 import {PlayerGraphic} from './graphics/player-graphic';
 import {PlayerMovement} from '../../shared/player-movement';
+import {StarGraphic} from './graphics/star-graphic';
+import {Random} from './util/random';
+
 import * as io from 'socket.io-client';
 
 export class Game {
@@ -16,6 +19,8 @@ export class Game {
 
     init() {
         this.socket = io();
+        this.baseContainer = new PIXI.Container();
+
 
         let otherSquares = this.otherSquares;
 
@@ -32,11 +37,7 @@ export class Game {
         this.socket.on('square-moved', (square: PlayerMovement) => {
             let squareGraphic = otherSquares[square.id];
 
-            console.log('otherSquares', otherSquares);
-
             if (squareGraphic) {
-                console.log('square', square.id, square.x, square.y);
-
                 squareGraphic.x = square.x;
                 squareGraphic.y = square.y;
             }
@@ -78,7 +79,14 @@ export class Game {
 
         this.playerSquare = new PlayerGraphic(true);
 
-        this.baseContainer = new PIXI.Container();
+        for (let i = 0; i < 8; i++) {
+            for (let k = 0; k < 8; k++) {
+                let x = Random.getInt(i * 31, 31 + i * 31);
+                let y = Random.getInt(k * 31, 31 + k * 31);
+                this.baseContainer.addChild(new StarGraphic(x, y));
+            }
+        }
+
         this.baseContainer.addChild(this.playerSquare);
     }
 
