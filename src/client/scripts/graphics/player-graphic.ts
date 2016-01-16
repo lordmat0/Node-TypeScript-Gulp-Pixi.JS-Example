@@ -6,6 +6,9 @@ export class PlayerGraphic extends PIXI.Graphics {
     id: string;
     vx = 0;
     vy = 0;
+    vrotation = 0;
+
+    private SIZE = 32;
 
     constructor(public player = false) {
         super();
@@ -20,6 +23,7 @@ export class PlayerGraphic extends PIXI.Graphics {
     }
 
     private initShape(): void {
+        this.pivot = new PIXI.Point(this.SIZE / 2, this.SIZE / 2);
 
         let lineStyle = 0xFF3300;
         let fillColor = 0x66CCFF;
@@ -31,7 +35,7 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.lineStyle(4, lineStyle, 1);
         this.beginFill(fillColor);
 
-        this.drawRect(0, 0, 32, 32);
+        this.drawRect(0, 0, this.SIZE, this.SIZE);
         this.endFill();
         this.x = 170;
         this.y = 170;
@@ -44,12 +48,22 @@ export class PlayerGraphic extends PIXI.Graphics {
         let down = new KeyboardHandler(KeyboardCode.DOWN);
 
         left.press = function() {
-            this.vx = -5;
+            this.vrotation = -0.09;
         }.bind(this);
 
         left.release = function() {
             if (!right.isDown) {
-                this.vx = 0;
+                this.vrotation = 0;
+            }
+        }.bind(this);
+
+        right.press = function() {
+            this.vrotation = 0.09;
+        }.bind(this);
+
+        right.release = function() {
+            if (!left.isDown) {
+                this.vrotation = 0;
             }
         }.bind(this);
 
@@ -60,15 +74,6 @@ export class PlayerGraphic extends PIXI.Graphics {
         up.release = function() {
             if (!down.isDown) {
                 this.vy = 0;
-            }
-        }.bind(this);
-
-        right.press = function() {
-            this.vx = 5;
-        }.bind(this);
-
-        right.release = function() {
-            if (!left.isDown) {
                 this.vx = 0;
             }
         }.bind(this);

@@ -93,6 +93,7 @@ export class Game {
     state() {
         this.playerSquare.x += this.playerSquare.vx;
         this.playerSquare.y += this.playerSquare.vy;
+        this.playerSquare.rotation += this.playerSquare.vrotation;
 
         let movement: PlayerMovement = {
             x: this.playerSquare.x,
