@@ -28,6 +28,7 @@ export class Game {
             let squareGraphic = new PlayerGraphic(false);
             squareGraphic.x = square.x;
             squareGraphic.y = square.y;
+            squareGraphic.rotation = square.rotation;
             squareGraphic.id = square.id;
 
             otherSquares[square.id] = squareGraphic;
@@ -40,6 +41,7 @@ export class Game {
             if (squareGraphic) {
                 squareGraphic.x = square.x;
                 squareGraphic.y = square.y;
+                squareGraphic.rotation = square.rotation;
             }
         });
 
@@ -67,6 +69,7 @@ export class Game {
                     let squareGraphic = new PlayerGraphic(false);
                     squareGraphic.x = squares[id].x;
                     squareGraphic.y = squares[id].y;
+                    squareGraphic.rotation = squares[id].rotation;
                     squareGraphic.id = id;
 
                     this.baseContainer.addChild(squareGraphic);
@@ -91,17 +94,9 @@ export class Game {
     }
 
     state() {
-        // this.playerSquare.x += this.playerSquare.vx;
-        // this.playerSquare.y += this.playerSquare.vy;
-        // this.playerSquare.rotation += this.playerSquare.vrotation;
-        //
-        // let movement: PlayerMovement = {
-        //     x: this.playerSquare.x,
-        //     y: this.playerSquare.y
-        // };
         let movement = this.playerSquare.getMovementInfo();
 
-        if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y) {
+        if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
             this.socket.emit('player-movement', movement);
         }
 

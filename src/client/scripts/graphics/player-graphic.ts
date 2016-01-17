@@ -86,57 +86,5 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.upController = new KeyboardHandler(KeyboardCode.UP);
         this.rightController = new KeyboardHandler(KeyboardCode.RIGHT);
         this.downController = new KeyboardHandler(KeyboardCode.DOWN);
-
-        this.leftController.press = function() {
-            this.rotation += this.TURN_LEFT_SPEED;
-        }.bind(this);
-
-        this.leftController.release = function() {
-            if (!this.rightController.isDown) {
-                this.vrotation = 0;
-            }
-        }.bind(this);
-
-        this.rightController.press = function() {
-            this.rotation += this.TURN_RIGHT_SPEED;
-        }.bind(this);
-
-        this.rightController.release = function() {
-            if (!this.leftController.isDown) {
-                this.vrotation = 0;
-            }
-        }.bind(this);
-
-        // up.press = function() {
-        //     let radian = this.rotation % (Math.PI * 2);
-        //
-        //     if (left.isDown) {
-        //         radian *= -0.09;
-        //     } else if (right.isDown) {
-        //         radian *= 0.09;
-        //     }
-        //
-        //     console.log(radian);
-        //
-        //     this.vx = Math.cos(radian) * 5;
-        //     this.vy = Math.sin(radian) * 5;
-        // }.bind(this);
-        //
-        // up.release = function() {
-        //     if (!down.isDown) {
-        //         this.vy = 0;
-        //         this.vx = 0;
-        //     }
-        // }.bind(this);
-        //
-        // down.press = function() {
-        //     this.vy = 5;
-        // }.bind(this);
-        //
-        // down.release = function() {
-        //     if (!up.isDown) {
-        //         this.vy = 0;
-        //     }
-        // }.bind(this);
     }
 }

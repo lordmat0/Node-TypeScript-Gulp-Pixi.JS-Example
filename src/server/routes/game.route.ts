@@ -31,6 +31,7 @@ function init(io: SocketIO.Server) {
 
             squareItem.x = data.x;
             squareItem.y = data.y;
+            squareItem.rotation = data.rotation;
 
             console.log(squareItem);
             io.sockets.emit('square-moved', squareItem);
