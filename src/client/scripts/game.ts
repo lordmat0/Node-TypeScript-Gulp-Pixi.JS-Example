@@ -91,14 +91,15 @@ export class Game {
     }
 
     state() {
-        this.playerSquare.x += this.playerSquare.vx;
-        this.playerSquare.y += this.playerSquare.vy;
-        this.playerSquare.rotation += this.playerSquare.vrotation;
-
-        let movement: PlayerMovement = {
-            x: this.playerSquare.x,
-            y: this.playerSquare.y
-        };
+        // this.playerSquare.x += this.playerSquare.vx;
+        // this.playerSquare.y += this.playerSquare.vy;
+        // this.playerSquare.rotation += this.playerSquare.vrotation;
+        //
+        // let movement: PlayerMovement = {
+        //     x: this.playerSquare.x,
+        //     y: this.playerSquare.y
+        // };
+        let movement = this.playerSquare.getMovementInfo();
 
         if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y) {
             this.socket.emit('player-movement', movement);
