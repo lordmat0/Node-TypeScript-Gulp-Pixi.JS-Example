@@ -68,7 +68,12 @@ export class PlayerGraphic extends PIXI.Graphics {
         }.bind(this);
 
         up.press = function() {
-            this.vy = -5;
+            let radian = this.rotation % (Math.PI * 2);
+
+            console.log(radian);
+
+            this.vx = Math.cos(radian) * 5;
+            this.vy = Math.sin(radian) * 5;
         }.bind(this);
 
         up.release = function() {
