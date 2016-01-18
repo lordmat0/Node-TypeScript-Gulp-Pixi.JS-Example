@@ -21,6 +21,10 @@ export class PlayerGraphic extends PIXI.Graphics {
     private TURN_RIGHT_SPEED = 0.05;
     private TURN_LEFT_SPEED = -0.05;
 
+    private AFTER_BURN = 5;
+    private AFTER_BURN_REDUCE = 0.1;
+    private burnLength = 0;
+
     constructor(public player = false) {
         super();
         this.init();
@@ -29,7 +33,6 @@ export class PlayerGraphic extends PIXI.Graphics {
     getMovementInfo(): PlayerMovement {
         let radian = this.rotation % (Math.PI * 2);
         let impulse = 0;
-        let UP = Math.PI * 0.5;
 
         if (this.leftController.isDown) {
             radian += this.TURN_LEFT_SPEED;
@@ -41,9 +44,19 @@ export class PlayerGraphic extends PIXI.Graphics {
 
         if (this.upController.isDown) {
             impulse = this.THURST;
+            this.burnLength = this.AFTER_BURN;
+        } else if (this.upController.isUp && this.burnLength) {
+            impulse = this.burnLength;
+            this.burnLength -= this.AFTER_BURN_REDUCE;
         } else if (this.downController.isDown) {
             impulse = this.REVERSE;
         }
+
+        if (this.burnLength < 0) {
+            this.burnLength = 0;
+        }
+
+
 
         this.x += Math.cos(radian) * impulse;
         this.y += Math.sin(radian) * impulse;
