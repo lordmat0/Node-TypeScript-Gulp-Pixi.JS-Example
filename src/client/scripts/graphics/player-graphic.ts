@@ -1,72 +1,30 @@
-import {KeyboardHandler} from '../util/keyboard-handler';
-import {KeyboardCode} from '../util/keyboard-code';
 import {PlayerMovement} from '../../../shared/player-movement';
-import {AfterBurnPhysics} from '../physics/after-burn.physics';
+import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
 
     id: string;
-    vx = 0;
-    vy = 0;
-    vrotation = 0;
-
-    private leftController: KeyboardHandler;
-    private rightController: KeyboardHandler;
-    private upController: KeyboardHandler;
-    private downController: KeyboardHandler;
-
-
     private SIZE = 32;
-    private THURST = 5;
-    private REVERSE = -2;
-    private TURN_RIGHT_SPEED = 0.05;
-    private TURN_LEFT_SPEED = -0.05;
+    private playerMovementPhysics: PlayerMovementPhysics;
 
-    private afterBurnPhysics: AfterBurnPhysics;
 
     constructor(public player = false) {
         super();
-        this.init();
+        this.initShape();
+        if (player) {
+            this.playerMovementPhysics = new PlayerMovementPhysics();
+        }
     }
 
     getMovementInfo(): PlayerMovement {
-        let radian = this.rotation % (Math.PI * 2);
-        let impulse = 0;
+        let playerMovement = this.playerMovementPhysics.calculateMovement(this.x, this.y, this.rotation);
+        this.x = playerMovement.x;
+        this.y = playerMovement.y;
+        this.rotation = playerMovement.rotation;
 
-        if (this.leftController.isDown) {
-            radian += this.TURN_LEFT_SPEED;
-            this.rotation += this.TURN_LEFT_SPEED;
-        } else if (this.rightController.isDown) {
-            radian += this.TURN_RIGHT_SPEED;
-            this.rotation += this.TURN_RIGHT_SPEED;
-        }
-
-        if (this.upController.isDown) {
-            impulse = this.THURST;
-            this.afterBurnPhysics.startBurn();
-        } else if (this.upController.isUp && this.afterBurnPhysics.isActive()) {
-            impulse = this.afterBurnPhysics.getImpulse();
-        } else if (this.downController.isDown) {
-            impulse = this.REVERSE;
-        }
-
-        this.x += Math.cos(radian) * impulse;
-        this.y += Math.sin(radian) * impulse;
-
-        return {
-            rotation: this.rotation,
-            x: this.x,
-            y: this.y
-        };
+        return playerMovement;
     }
 
-    private init(): void {
-        this.initShape();
-        if (this.player) {
-            this.initControls();
-            this.initPhysics();
-        }
-    }
 
     private initShape(): void {
         this.pivot = new PIXI.Point(this.SIZE / 2, this.SIZE / 2);
@@ -85,17 +43,6 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.endFill();
         this.x = 170;
         this.y = 170;
-    }
-
-    private initControls(): void {
-        this.leftController = new KeyboardHandler(KeyboardCode.LEFT);
-        this.upController = new KeyboardHandler(KeyboardCode.UP);
-        this.rightController = new KeyboardHandler(KeyboardCode.RIGHT);
-        this.downController = new KeyboardHandler(KeyboardCode.DOWN);
-    }
-
-    public initPhysics(): void {
-        this.afterBurnPhysics = new AfterBurnPhysics();
     }
 
 }

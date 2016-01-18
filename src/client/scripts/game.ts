@@ -9,8 +9,8 @@ export class Game {
 
     baseContainer: PIXI.Container;
 
-    private otherSquares: { [id: string]: PlayerGraphic } = {};
-    private playerSquare: PlayerGraphic;
+    private otherPlayerGraphics: { [id: string]: PlayerGraphic } = {};
+    private playerGraphic: PlayerGraphic;
     private socket: SocketIOClient.Socket;
     private lastMovement: PlayerMovement = {
         x: -1,
@@ -22,7 +22,7 @@ export class Game {
         this.baseContainer = new PIXI.Container();
 
 
-        let otherSquares = this.otherSquares;
+        let otherSquares = this.otherPlayerGraphics;
 
         this.socket.on('new-square', (square: PlayerMovement) => {
             let squareGraphic = new PlayerGraphic(false);
@@ -80,7 +80,7 @@ export class Game {
 
         });
 
-        this.playerSquare = new PlayerGraphic(true);
+        this.playerGraphic = new PlayerGraphic(true);
 
         for (let i = 0; i < 8; i++) {
             for (let k = 0; k < 8; k++) {
@@ -90,11 +90,11 @@ export class Game {
             }
         }
 
-        this.baseContainer.addChild(this.playerSquare);
+        this.baseContainer.addChild(this.playerGraphic);
     }
 
     state() {
-        let movement = this.playerSquare.getMovementInfo();
+        let movement = this.playerGraphic.getMovementInfo();
 
         if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
             this.socket.emit('player-movement', movement);
