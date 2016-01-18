@@ -1,6 +1,7 @@
 import {KeyboardHandler} from '../util/keyboard-handler';
 import {KeyboardCode} from '../util/keyboard-code';
 import {PlayerMovement} from '../../../shared/player-movement';
+import {AfterBurnPhysics} from '../physics/after-burn.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
 
@@ -21,9 +22,7 @@ export class PlayerGraphic extends PIXI.Graphics {
     private TURN_RIGHT_SPEED = 0.05;
     private TURN_LEFT_SPEED = -0.05;
 
-    private AFTER_BURN = 5;
-    private AFTER_BURN_REDUCE = 0.1;
-    private burnLength = 0;
+    private afterBurnPhysics: AfterBurnPhysics;
 
     constructor(public player = false) {
         super();
@@ -44,19 +43,12 @@ export class PlayerGraphic extends PIXI.Graphics {
 
         if (this.upController.isDown) {
             impulse = this.THURST;
-            this.burnLength = this.AFTER_BURN;
-        } else if (this.upController.isUp && this.burnLength) {
-            impulse = this.burnLength;
-            this.burnLength -= this.AFTER_BURN_REDUCE;
+            this.afterBurnPhysics.startBurn();
+        } else if (this.upController.isUp && this.afterBurnPhysics.isActive()) {
+            impulse = this.afterBurnPhysics.getImpulse();
         } else if (this.downController.isDown) {
             impulse = this.REVERSE;
         }
-
-        if (this.burnLength < 0) {
-            this.burnLength = 0;
-        }
-
-
 
         this.x += Math.cos(radian) * impulse;
         this.y += Math.sin(radian) * impulse;
@@ -72,6 +64,7 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.initShape();
         if (this.player) {
             this.initControls();
+            this.initPhysics();
         }
     }
 
@@ -100,4 +93,9 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.rightController = new KeyboardHandler(KeyboardCode.RIGHT);
         this.downController = new KeyboardHandler(KeyboardCode.DOWN);
     }
+
+    public initPhysics(): void {
+        this.afterBurnPhysics = new AfterBurnPhysics();
+    }
+
 }
