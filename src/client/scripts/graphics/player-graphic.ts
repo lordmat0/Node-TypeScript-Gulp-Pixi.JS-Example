@@ -37,10 +37,25 @@ export class PlayerGraphic extends PIXI.Graphics {
         }
 
         this.lineStyle(4, lineStyle, 1);
-        this.beginFill(fillColor);
 
+        // Body
+        this.beginFill(fillColor);
         this.drawRect(0, 0, this.SIZE, this.SIZE);
         this.endFill();
+
+        // Top wing
+        this.moveTo(0, 0);
+        this.lineTo(-1, -32);
+        this.lineTo(32, 0);
+        this.endFill();
+
+        // Bottom wing
+        this.moveTo(0, this.SIZE);
+        this.lineTo(-1, 32 + this.SIZE);
+        this.lineTo(this.SIZE, this.SIZE);
+        this.endFill();
+
+        // Starting coordinates 
         this.x = 170;
         this.y = 170;
     }
