@@ -17,14 +17,13 @@ export class PlayerGraphic extends PIXI.Graphics {
     }
 
     getMovementInfo(): PlayerMovement {
-        let playerMovement = this.playerMovementPhysics.calculateMovement(this.x, this.y, this.rotation);
+        let playerMovement = this.playerMovementPhysics.calculate(this.x, this.y, this.rotation);
         this.x = playerMovement.x;
         this.y = playerMovement.y;
         this.rotation = playerMovement.rotation;
 
         return playerMovement;
     }
-
 
     private initShape(): void {
         this.pivot = new PIXI.Point(this.SIZE / 2, this.SIZE / 2);
@@ -55,7 +54,7 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.lineTo(this.SIZE, this.SIZE);
         this.endFill();
 
-        // Starting coordinates 
+        // Starting coordinates
         this.x = 170;
         this.y = 170;
     }

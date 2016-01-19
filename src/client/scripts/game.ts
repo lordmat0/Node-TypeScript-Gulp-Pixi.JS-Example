@@ -1,6 +1,6 @@
-import {PlayerGraphic} from './graphics/player-graphic';
+import {PlayerGraphic} from './graphics/player.graphic';
 import {PlayerMovement} from '../../shared/player-movement';
-import {StarGraphic} from './graphics/star-graphic';
+import {StarGraphic} from './graphics/star.graphic';
 import {Random} from './util/random';
 
 import * as io from 'socket.io-client';

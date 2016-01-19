@@ -22,7 +22,7 @@ export class PlayerMovementPhysics {
         this.afterBurnPhysics = new AfterBurnPhysics();
     }
 
-    calculateMovement(x: number, y: number, rotation: number): PlayerMovement {
+    calculate(x: number, y: number, rotation: number): PlayerMovement {
         let radian = rotation % (Math.PI * 2);
         let impulse = 0;
 
@@ -50,7 +50,7 @@ export class PlayerMovementPhysics {
             rotation: rotation,
             x: x,
             y: y
-        }
+        };
     }
 
     private initControls(): void {
