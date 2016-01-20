@@ -3,9 +3,7 @@ export class BulletGraphic extends PIXI.Graphics {
 
     private SIZE = 5;
 
-    // private bulletMovement: BulletMovement;
-
-    constructor(public x: number, public y: number) {
+    constructor(public x: number, public y: number, public rotation: number) {
         super();
         this.init();
     }
@@ -18,9 +16,5 @@ export class BulletGraphic extends PIXI.Graphics {
 
         this.beginFill(bulletColor);
         this.drawRect(x, y, size, size);
-    }
-
-    public tick(): void {
-
     }
 }

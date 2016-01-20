@@ -117,6 +117,8 @@ export class Game {
     }
 
     private initStars(): void {
+        // TODO move into a container
+
         for (let i = 0; i < 8; i++) {
             for (let k = 0; k < 8; k++) {
                 let x = Random.getInt(i * 31, 31 + i * 31);
