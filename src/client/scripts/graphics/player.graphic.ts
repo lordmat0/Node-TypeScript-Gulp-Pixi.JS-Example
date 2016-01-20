@@ -1,18 +1,24 @@
 import {PlayerMovement} from '../../../shared/player-movement';
 import {PlayerMovementPhysics} from '../physics/player-movement.physics';
+import {FiringPhysics} from '../physics/firing.physics';
+import {BulletMovement} from '../../../shared/bullet-movement';
+import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
 
     id: string;
     private SIZE = 32;
     private playerMovementPhysics: PlayerMovementPhysics;
-
+    private firingPhysics: FiringPhysics;
+    private bulletPhysics: BulletPhysics;
 
     constructor(public player = false) {
         super();
         this.initShape();
         if (player) {
             this.playerMovementPhysics = new PlayerMovementPhysics();
+            this.firingPhysics = new FiringPhysics();
+            this.bulletPhysics = new BulletPhysics();
         }
     }
 
@@ -23,6 +29,14 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.rotation = playerMovement.rotation;
 
         return playerMovement;
+    }
+
+    isShooting(): boolean {
+        return this.firingPhysics.canShoot();
+    }
+
+    getBulletInfo(): BulletMovement {
+        return this.bulletPhysics.calculateBullet(this.x, this.y, this.rotation);
     }
 
     private initShape(): void {

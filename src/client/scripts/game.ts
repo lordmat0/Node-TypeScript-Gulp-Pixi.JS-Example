@@ -2,27 +2,63 @@ import {PlayerGraphic} from './graphics/player.graphic';
 import {PlayerMovement} from '../../shared/player-movement';
 import {StarGraphic} from './graphics/star.graphic';
 import {Random} from './util/random';
+import {BulletContainer} from './container/bullet.container';
 
 import * as io from 'socket.io-client';
 
 export class Game {
 
     baseContainer: PIXI.Container;
+    private bulletContainer: BulletContainer;
 
-    private otherPlayerGraphics: { [id: string]: PlayerGraphic } = {};
-    private playerGraphic: PlayerGraphic;
     private socket: SocketIOClient.Socket;
+
+    private playerGraphic: PlayerGraphic;
+    private otherPlayerGraphics: { [id: string]: PlayerGraphic } = {};
+
     private lastMovement: PlayerMovement = {
         x: -1,
         y: -1
     };
 
-    init() {
-        this.socket = io();
+    init(): void {
         this.baseContainer = new PIXI.Container();
+        this.playerGraphic = new PlayerGraphic(true);
+        this.bulletContainer = new BulletContainer();
+
+        this.initSocket();
+        this.initStars();
+
+        this.baseContainer.addChild(this.playerGraphic);
+        this.baseContainer.addChild(this.bulletContainer);
+    }
 
 
+    state(): void {
+        let movement = this.playerGraphic.getMovementInfo();
+
+        if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
+            this.socket.emit('player-movement', movement);
+        }
+
+        if (this.playerGraphic.isShooting()) {
+            let bulletInfo = this.playerGraphic.getBulletInfo();
+            this.bulletContainer.addBullet(bulletInfo);
+        }
+
+        this.bulletContainer.tick();
+
+        this.lastMovement = movement;
+    }
+
+    get stage(): PIXI.Container {
+        return this.baseContainer;
+    }
+
+    private initSocket(): void {
         let otherSquares = this.otherPlayerGraphics;
+
+        this.socket = io();
 
         this.socket.on('new-square', (square: PlayerMovement) => {
             let squareGraphic = new PlayerGraphic(false);
@@ -65,7 +101,6 @@ export class Game {
 
             for (let id in squares) {
                 if (squares.hasOwnProperty(id)) {
-                    let square = squares[id];
                     let squareGraphic = new PlayerGraphic(false);
                     squareGraphic.x = squares[id].x;
                     squareGraphic.y = squares[id].y;
@@ -74,14 +109,14 @@ export class Game {
 
                     this.baseContainer.addChild(squareGraphic);
 
-                    otherSquares[square.id] = squareGraphic;
+                    otherSquares[squares[id].id] = squareGraphic;
                 }
             }
 
         });
+    }
 
-        this.playerGraphic = new PlayerGraphic(true);
-
+    private initStars(): void {
         for (let i = 0; i < 8; i++) {
             for (let k = 0; k < 8; k++) {
                 let x = Random.getInt(i * 31, 31 + i * 31);
@@ -89,21 +124,5 @@ export class Game {
                 this.baseContainer.addChild(new StarGraphic(x, y));
             }
         }
-
-        this.baseContainer.addChild(this.playerGraphic);
-    }
-
-    state() {
-        let movement = this.playerGraphic.getMovementInfo();
-
-        if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
-            this.socket.emit('player-movement', movement);
-        }
-
-        this.lastMovement = movement;
-    }
-
-    get stage(): PIXI.Container {
-        return this.baseContainer;
     }
 }
