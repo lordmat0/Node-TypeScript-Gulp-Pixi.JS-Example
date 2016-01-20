@@ -10,11 +10,10 @@ export class BulletGraphic extends PIXI.Graphics {
 
     private init(): void {
         let bulletColor = 0xffff00;
-        let x = this.x;
-        let y = this.y;
         let size = this.SIZE;
 
         this.beginFill(bulletColor);
-        this.drawRect(x, y, size, size);
+        this.drawRect(0, 0, size, size);
+        this.endFill();
     }
 }

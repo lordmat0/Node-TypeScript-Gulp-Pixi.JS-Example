@@ -5,8 +5,9 @@ import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
-
+    // TODO change this to name
     id: string;
+
     private SIZE = 32;
     private playerMovementPhysics: PlayerMovementPhysics;
     private firingPhysics: FiringPhysics;
@@ -36,7 +37,12 @@ export class PlayerGraphic extends PIXI.Graphics {
     }
 
     getBulletInfo(): BulletMovement {
-        return this.bulletPhysics.calculateBullet(this.x, this.y, this.rotation);
+        return {
+            id: this.id,
+            rotation: this.rotation,
+            x: this.x,
+            y: this.y
+        };
     }
 
     private initShape(): void {

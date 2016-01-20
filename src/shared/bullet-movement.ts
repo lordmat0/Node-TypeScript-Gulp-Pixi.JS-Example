@@ -1,6 +1,6 @@
 
 export interface BulletMovement {
-    id?: number;
+    id?: string;
     x: number;
     y: number;
     rotation?: number;

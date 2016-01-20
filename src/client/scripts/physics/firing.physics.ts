@@ -1,4 +1,3 @@
-import {BulletMovement} from '../../../shared/bullet-movement';
 import {KeyboardHandler} from '../util/keyboard-handler';
 import {KeyboardCode} from '../util/keyboard-code';
 
@@ -16,10 +15,6 @@ export class FiringPhysics {
     canShoot(): boolean {
         return this.bulletsShot < this.MAX_BULLETS_OUT
             && this.spaceController.isDown;
-    }
-
-    bulletInfo(): BulletMovement {
-        return null;
     }
 
 }
