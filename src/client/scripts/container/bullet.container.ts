@@ -37,8 +37,8 @@ export class BulletContainer extends PIXI.Container {
         this.addChild(new BulletGraphic(x, y, rotation));
     }
 
-    private outOfBounds(bullet: BulletGraphic): boolean {
-        return false;
-    }
+    // private outOfBounds(bullet: BulletGraphic): boolean {
+    //     return false;
+    // }
 
 }

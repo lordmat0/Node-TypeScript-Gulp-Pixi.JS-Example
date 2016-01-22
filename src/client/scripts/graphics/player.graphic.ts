@@ -1,33 +1,17 @@
-import {PlayerMovement} from '../../../shared/player-movement';
-import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {FiringPhysics} from '../physics/firing.physics';
 import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
-    // TODO change this to name
-    id: string;
-
     private SIZE = 32;
-    private playerMovementPhysics: PlayerMovementPhysics;
     private firingPhysics: FiringPhysics;
     private bulletPhysics: BulletPhysics;
 
     constructor() {
         super();
         this.initShape();
-        this.playerMovementPhysics = new PlayerMovementPhysics();
         this.firingPhysics = new FiringPhysics();
         this.bulletPhysics = new BulletPhysics();
-    }
-
-    getMovementInfo(): PlayerMovement {
-        let playerMovement = this.playerMovementPhysics.calculate(this.x, this.y, this.rotation);
-        this.x = playerMovement.x;
-        this.y = playerMovement.y;
-        this.rotation = playerMovement.rotation;
-
-        return playerMovement;
     }
 
     isShooting(): boolean {
@@ -36,7 +20,7 @@ export class PlayerGraphic extends PIXI.Graphics {
 
     getBulletInfo(): BulletMovement {
         return {
-            id: this.id,
+            id: this.name,
             rotation: this.rotation,
             x: this.x,
             y: this.y
@@ -67,10 +51,6 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.lineTo(-1, 32 + this.SIZE);
         this.lineTo(this.SIZE, this.SIZE);
         this.endFill();
-
-        // Starting coordinates
-        this.x = 170;
-        this.y = 170;
     }
 
 }

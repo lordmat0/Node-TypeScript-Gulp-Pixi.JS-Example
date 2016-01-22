@@ -41,10 +41,12 @@ export class Game {
 
 
     state(): void {
-        let movement = this.playerGraphic.getMovementInfo();
+        let movement = this.playerContainer.getMovementInfo();
 
         if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
             this.socket.emit('player-movement', movement);
+            this.baseContainer.x = -movement.x + 250;
+            this.baseContainer.y = -movement.y + 250;
         }
 
         if (this.playerGraphic.isShooting()) {
