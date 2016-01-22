@@ -10,8 +10,8 @@ export class PlayerCameraContainer extends PIXI.Container {
         super();
         this.playerMovementPhysics = new PlayerMovementPhysics();
 
-        this.x = 150;
-        this.y = 150;
+        this.x = 128;
+        this.y = 128;
     }
 
     getMovementInfo(): PlayerMovement {

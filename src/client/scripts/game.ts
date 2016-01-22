@@ -37,6 +37,9 @@ export class Game {
         this.baseContainer.addChild(this.playerContainer);
         this.playerContainer.addChild(this.playerGraphic);
         this.baseContainer.addChild(this.bulletContainer);
+
+        // this.baseContainer.scale.x = 0.8;
+        // this.baseContainer.scale.y = 0.8;
     }
 
 
@@ -45,8 +48,10 @@ export class Game {
 
         if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
             this.socket.emit('player-movement', movement);
-            this.baseContainer.x = -movement.x + 250;
-            this.baseContainer.y = -movement.y + 250;
+
+            // Scale with movement
+            this.baseContainer.x = -movement.x * 0.8 + 256;
+            this.baseContainer.y = -movement.y * 0.8 + 256;
         }
 
         if (this.playerGraphic.isShooting()) {
