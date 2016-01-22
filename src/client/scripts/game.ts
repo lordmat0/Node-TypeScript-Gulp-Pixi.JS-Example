@@ -121,8 +121,8 @@ export class Game {
 
         for (let i = 0; i < 8; i++) {
             for (let k = 0; k < 8; k++) {
-                let x = Random.getInt(i * 31, 31 + i * 31);
-                let y = Random.getInt(k * 31, 31 + k * 31);
+                let x = Random.getInt(i * 62, 62 + i * 62);
+                let y = Random.getInt(k * 62, 62 + k * 62);
                 this.baseContainer.addChild(new StarGraphic(x, y));
             }
         }
