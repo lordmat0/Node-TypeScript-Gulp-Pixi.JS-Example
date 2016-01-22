@@ -1,3 +1,5 @@
+import {EnemyGraphic} from './graphics/enemy.graphic';
+import {PlayerCameraContainer} from './container/player-camera.container';
 import {PlayerGraphic} from './graphics/player.graphic';
 import {PlayerMovement} from '../../shared/player-movement';
 import {StarGraphic} from './graphics/star.graphic';
@@ -8,13 +10,14 @@ import * as io from 'socket.io-client';
 
 export class Game {
 
+    playerContainer: PlayerCameraContainer;
     baseContainer: PIXI.Container;
     private bulletContainer: BulletContainer;
 
     private socket: SocketIOClient.Socket;
 
     private playerGraphic: PlayerGraphic;
-    private otherPlayerGraphics: { [id: string]: PlayerGraphic } = {};
+    private otherPlayerGraphics: { [id: string]: EnemyGraphic } = {};
 
     private lastMovement: PlayerMovement = {
         x: -1,
@@ -23,13 +26,16 @@ export class Game {
 
     init(): void {
         this.baseContainer = new PIXI.Container();
-        this.playerGraphic = new PlayerGraphic(true);
+        this.playerContainer = new PlayerCameraContainer();
+
+        this.playerGraphic = new PlayerGraphic();
         this.bulletContainer = new BulletContainer();
 
         this.initSocket();
         this.initStars();
 
-        this.baseContainer.addChild(this.playerGraphic);
+        this.baseContainer.addChild(this.playerContainer);
+        this.playerContainer.addChild(this.playerGraphic);
         this.baseContainer.addChild(this.bulletContainer);
     }
 
@@ -61,7 +67,7 @@ export class Game {
         this.socket = io();
 
         this.socket.on('new-square', (square: PlayerMovement) => {
-            let squareGraphic = new PlayerGraphic(false);
+            let squareGraphic = new EnemyGraphic();
             squareGraphic.x = square.x;
             squareGraphic.y = square.y;
             squareGraphic.rotation = square.rotation;
@@ -101,7 +107,7 @@ export class Game {
 
             for (let id in squares) {
                 if (squares.hasOwnProperty(id)) {
-                    let squareGraphic = new PlayerGraphic(false);
+                    let squareGraphic = new EnemyGraphic();
                     squareGraphic.x = squares[id].x;
                     squareGraphic.y = squares[id].y;
                     squareGraphic.rotation = squares[id].rotation;

@@ -13,14 +13,12 @@ export class PlayerGraphic extends PIXI.Graphics {
     private firingPhysics: FiringPhysics;
     private bulletPhysics: BulletPhysics;
 
-    constructor(public player = false) {
+    constructor() {
         super();
         this.initShape();
-        if (player) {
-            this.playerMovementPhysics = new PlayerMovementPhysics();
-            this.firingPhysics = new FiringPhysics();
-            this.bulletPhysics = new BulletPhysics();
-        }
+        this.playerMovementPhysics = new PlayerMovementPhysics();
+        this.firingPhysics = new FiringPhysics();
+        this.bulletPhysics = new BulletPhysics();
     }
 
     getMovementInfo(): PlayerMovement {
@@ -48,12 +46,8 @@ export class PlayerGraphic extends PIXI.Graphics {
     private initShape(): void {
         this.pivot = new PIXI.Point(this.SIZE / 2, this.SIZE / 2);
 
-        let lineStyle = 0xFF3300;
-        let fillColor = 0x66CCFF;
-        if (this.player) {
-            lineStyle = 0x66CCFF;
-            fillColor = 0x7F9A65;
-        }
+        let lineStyle = 0x66CCFF;
+        let fillColor = 0x7F9A65;
 
         this.lineStyle(4, lineStyle, 1);
 
