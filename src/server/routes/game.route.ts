@@ -17,7 +17,7 @@ function init(io: SocketIO.Server) {
         socket.emit('square-list', squares);
 
         let square: PlayerMovement = {
-            id: socket.id,
+            name: socket.id,
             x: -50,
             y: -50
         };

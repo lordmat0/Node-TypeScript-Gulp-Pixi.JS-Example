@@ -17,7 +17,7 @@ export class Game {
     private socket: SocketIOClient.Socket;
 
     private playerGraphic: PlayerGraphic;
-    private otherPlayerGraphics: { [id: string]: EnemyGraphic } = {};
+    private otherPlayerGraphics: { [name: string]: EnemyGraphic } = {};
 
     private lastMovement: PlayerMovement = {
         x: -1,
@@ -71,14 +71,14 @@ export class Game {
             squareGraphic.x = square.x;
             squareGraphic.y = square.y;
             squareGraphic.rotation = square.rotation;
-            squareGraphic.id = square.id;
+            squareGraphic.name = square.name;
 
-            otherSquares[square.id] = squareGraphic;
+            otherSquares[square.name] = squareGraphic;
             this.baseContainer.addChild(squareGraphic);
         });
 
         this.socket.on('square-moved', (square: PlayerMovement) => {
-            let squareGraphic = otherSquares[square.id];
+            let squareGraphic = otherSquares[square.name];
 
             if (squareGraphic) {
                 squareGraphic.x = square.x;
@@ -111,11 +111,11 @@ export class Game {
                     squareGraphic.x = squares[id].x;
                     squareGraphic.y = squares[id].y;
                     squareGraphic.rotation = squares[id].rotation;
-                    squareGraphic.id = id;
+                    squareGraphic.name = id;
 
                     this.baseContainer.addChild(squareGraphic);
 
-                    otherSquares[squares[id].id] = squareGraphic;
+                    otherSquares[squares[id].name] = squareGraphic;
                 }
             }
 
