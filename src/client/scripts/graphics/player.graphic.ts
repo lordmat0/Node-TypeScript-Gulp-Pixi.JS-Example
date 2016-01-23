@@ -28,7 +28,9 @@ export class PlayerGraphic extends PIXI.Graphics {
     }
 
     private initShape(): void {
-        this.pivot = new PIXI.Point(this.SIZE / 2, this.SIZE / 2);
+        let size = this.SIZE;
+
+        this.pivot = new PIXI.Point(size / 2, size / 2);
 
         let lineStyle = 0x66CCFF;
         let fillColor = 0x7F9A65;
@@ -37,19 +39,19 @@ export class PlayerGraphic extends PIXI.Graphics {
 
         // Body
         this.beginFill(fillColor);
-        this.drawRect(0, 0, this.SIZE, this.SIZE);
+        this.drawRect(0, 0, size, size);
         this.endFill();
 
         // Top wing
         this.moveTo(0, 0);
-        this.lineTo(-1, -32);
-        this.lineTo(32, 0);
+        this.lineTo(-1, -size);
+        this.lineTo(size, 0);
         this.endFill();
 
         // Bottom wing
-        this.moveTo(0, this.SIZE);
-        this.lineTo(-1, 32 + this.SIZE);
-        this.lineTo(this.SIZE, this.SIZE);
+        this.moveTo(0, size);
+        this.lineTo(-1, size * 2);
+        this.lineTo(size, size);
         this.endFill();
     }
 

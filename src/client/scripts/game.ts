@@ -1,3 +1,4 @@
+import {RenderDetails} from './render-details';
 import {WorldContainer} from './container/world-container';
 import {EnemyGraphic} from './graphics/enemy.graphic';
 import {PlayerCameraContainer} from './container/player-camera.container';
@@ -25,12 +26,16 @@ export class Game {
         y: -1
     };
 
+    private renderDetails: RenderDetails;
+
     init(): void {
         this.worldContainer = new WorldContainer();
         this.playerContainer = new PlayerCameraContainer();
 
         this.playerGraphic = new PlayerGraphic();
         this.bulletContainer = new BulletContainer();
+
+        this.renderDetails = new RenderDetails();
 
         this.initSocket();
         this.initStars();
@@ -39,7 +44,6 @@ export class Game {
         this.playerContainer.addChild(this.playerGraphic);
         this.worldContainer.addChild(this.bulletContainer);
     }
-
 
     state(): void {
         let movement = this.playerContainer.getMovementInfo();
@@ -50,14 +54,14 @@ export class Game {
             this.worldContainer.scaleOut();
             let scale = this.worldContainer.getScale();
             // Scale with movement
-            this.worldContainer.x = -movement.x * scale + 256;
-            this.worldContainer.y = -movement.y * scale + 256;
+            this.worldContainer.x = -movement.x * scale + this.renderDetails.halfWidth;
+            this.worldContainer.y = -movement.y * scale + this.renderDetails.halfHeight;
         } else {
             this.worldContainer.scaleIn();
             let scale = this.worldContainer.getScale();
             // Scale with movement
-            this.worldContainer.x = -movement.x * scale + 256;
-            this.worldContainer.y = -movement.y * scale + 256;
+            this.worldContainer.x = -movement.x * scale + this.renderDetails.halfWidth;
+            this.worldContainer.y = -movement.y * scale + this.renderDetails.halfHeight;
         }
 
         if (this.playerGraphic.isShooting()) {

@@ -1,7 +1,7 @@
 
 export class ZoomPhysics {
 
-    private SCALE_OUT_MAX: number
+    private SCALE_OUT_MAX: number;
     private SCALE_IN_MAX: number;
 
     private SCALE_OUT_SPEED = 0.005;

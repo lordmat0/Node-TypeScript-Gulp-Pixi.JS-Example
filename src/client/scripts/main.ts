@@ -1,8 +1,10 @@
+import {RenderDetails} from './render-details';
 import * as PIXI from 'pixi.js';
 import {Game} from './game';
 
 // Create the renderer
-let renderer = PIXI.autoDetectRenderer(512, 512);
+let renderDetails = new RenderDetails();
+let renderer = PIXI.autoDetectRenderer(renderDetails.x, renderDetails.y);
 
 let canvas = document.getElementById('canvas');
 canvas.appendChild(renderer.view);
