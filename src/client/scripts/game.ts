@@ -3,7 +3,6 @@ import {RenderDetails} from './render-details';
 import {WorldContainer} from './container/world.container';
 import {EnemyGraphic} from './graphics/enemy.graphic';
 import {PlayerContainer} from './container/player.container';
-import {PlayerGraphic} from './graphics/player.graphic';
 import {PlayerMovement} from '../../shared/player-movement';
 import {BulletContainer} from './container/bullet.container';
 
@@ -18,7 +17,6 @@ export class Game {
 
     private socket: SocketIOClient.Socket;
 
-    private playerGraphic: PlayerGraphic;
     private otherPlayerGraphics: { [name: string]: EnemyGraphic } = {};
 
     private renderDetails: RenderDetails;
@@ -30,8 +28,6 @@ export class Game {
         this.playerContainer = new PlayerContainer(this.renderDetails);
         this.bulletContainer = new BulletContainer();
         this.starContainer = new StarContainer();
-
-        this.playerGraphic = new PlayerGraphic();
 
         this.renderDetails = new RenderDetails();
 
@@ -46,8 +42,6 @@ export class Game {
         this.worldContainer.addChild(this.starContainer);
         this.worldContainer.addChild(this.playerContainer);
         this.worldContainer.addChild(this.bulletContainer);
-
-        this.playerContainer.addChild(this.playerGraphic);
     }
 
     state(): void {
@@ -56,30 +50,11 @@ export class Game {
 
         this.worldContainer.tick();
 
-        /*
-        let movement = this.playerContainer.getMovementInfo();
 
-        if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
-            this.socket.emit('player-movement', movement);
-
-            this.worldContainer.scaleOut();
-            let scale = this.worldContainer.getScale();
-            // Scale with movement
-            this.worldContainer.x = -movement.x * scale + this.renderDetails.halfWidth;
-            this.worldContainer.y = -movement.y * scale + this.renderDetails.halfHeight;
-        } else {
-            this.worldContainer.scaleIn();
-            let scale = this.worldContainer.getScale();
-            // Scale with movement
-            this.worldContainer.x = -movement.x * scale + this.renderDetails.halfWidth;
-            this.worldContainer.y = -movement.y * scale + this.renderDetails.halfHeight;
-        }
-        */
-
-        if (this.playerGraphic.isShooting()) {
-            let bulletInfo = this.playerGraphic.getBulletInfo();
-            this.bulletContainer.addBullet(bulletInfo);
-        }
+        // if (this.playerGraphic.isShooting()) {
+        //     let bulletInfo = this.playerGraphic.getBulletInfo();
+        //     this.bulletContainer.addBullet(bulletInfo);
+        // }
 
         this.bulletContainer.tick();
 

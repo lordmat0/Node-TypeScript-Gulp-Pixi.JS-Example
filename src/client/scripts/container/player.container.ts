@@ -1,5 +1,6 @@
 import {RenderDetails} from '../render-details';
 import {PlayerMovementPhysics} from '../physics/player-movement.physics';
+import {PlayerGraphic} from '../graphics/player.graphic';
 import {PlayerMovement} from '../../../shared/player-movement';
 
 
@@ -7,14 +8,17 @@ export class PlayerContainer extends PIXI.Container {
     onMove = 'on-move';
 
     private playerMovementPhysics: PlayerMovementPhysics;
+    private playerGraphic: PlayerGraphic;
 
     constructor(public renderDetails: RenderDetails) {
         super();
         this.playerMovementPhysics = new PlayerMovementPhysics();
+        this.playerGraphic = new PlayerGraphic();
 
-        // TODO move this out to the game
         this.x = renderDetails.halfWidth;
         this.y = renderDetails.halfHeight;
+
+        this.addChild(this.playerGraphic);
     }
 
     tick(): void {
