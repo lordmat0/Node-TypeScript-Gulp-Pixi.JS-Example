@@ -1,3 +1,4 @@
+import {EnemyContainer} from './container/enemy.container';
 import {StarContainer} from './container/star.container';
 import {RenderDetails} from './render-details';
 import {WorldContainer} from './container/world.container';
@@ -11,6 +12,7 @@ import * as io from 'socket.io-client';
 export class Game {
 
     private playerContainer: PlayerContainer;
+    private enemyContainer: EnemyContainer;
     private worldContainer: WorldContainer;
     private bulletContainer: BulletContainer;
     private starContainer: StarContainer;
@@ -19,29 +21,11 @@ export class Game {
 
     private otherPlayerGraphics: { [name: string]: EnemyGraphic } = {};
 
-    private renderDetails: RenderDetails;
-
-    init(): void {
-        this.renderDetails = new RenderDetails();
-
-        this.worldContainer = new WorldContainer(this.renderDetails);
-        this.playerContainer = new PlayerContainer(this.renderDetails);
-        this.bulletContainer = new BulletContainer();
-        this.starContainer = new StarContainer();
-
-        this.renderDetails = new RenderDetails();
-
+    constructor(private renderDetails: RenderDetails) {
+        this.initContainers();
         this.initSocket();
-
-        this.playerContainer.on(this.playerContainer.onMove, (movement: PlayerMovement) => {
-            this.worldContainer.scaleOut(movement);
-            this.socket.emit('player-movement', movement);
-        });
-
-
-        this.worldContainer.addChild(this.starContainer);
-        this.worldContainer.addChild(this.playerContainer);
-        this.worldContainer.addChild(this.bulletContainer);
+        this.initEvents();
+        this.initNestedContainers();
     }
 
     state(): void {
@@ -57,12 +41,34 @@ export class Game {
         // }
 
         this.bulletContainer.tick();
-
     }
 
     get stage(): PIXI.Container {
         return this.worldContainer;
     }
+
+    private initContainers(): void {
+
+        this.worldContainer = new WorldContainer(this.renderDetails);
+        this.playerContainer = new PlayerContainer(this.renderDetails);
+        this.enemyContainer = new EnemyContainer();
+        this.bulletContainer = new BulletContainer();
+        this.starContainer = new StarContainer();
+    }
+
+    private initEvents(): void {
+        this.playerContainer.on(this.playerContainer.onMove, (movement: PlayerMovement) => {
+            this.worldContainer.scaleOut(movement);
+            this.socket.emit('player-movement', movement);
+        });
+    }
+
+    private initNestedContainers(): void {
+        this.worldContainer.addChild(this.starContainer);
+        this.worldContainer.addChild(this.playerContainer);
+        this.worldContainer.addChild(this.bulletContainer);
+    }
+
 
     private initSocket(): void {
         let otherSquares = this.otherPlayerGraphics;

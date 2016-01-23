@@ -9,8 +9,7 @@ let renderer = PIXI.autoDetectRenderer(renderDetails.x, renderDetails.y);
 let canvas = document.getElementById('canvas');
 canvas.appendChild(renderer.view);
 
-let game = new Game();
-game.init();
+let game = new Game(renderDetails);
 
 gameLoop();
 
