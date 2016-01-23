@@ -21,28 +21,27 @@ export class Game {
     private playerGraphic: PlayerGraphic;
     private otherPlayerGraphics: { [name: string]: EnemyGraphic } = {};
 
-    private lastMovement: PlayerMovement = {
-        x: -1,
-        y: -1
-    };
-
     private renderDetails: RenderDetails;
 
     init(): void {
-        this.worldContainer = new WorldContainer();
-        this.playerContainer = new PlayerContainer();
+        this.renderDetails = new RenderDetails();
+
+        this.worldContainer = new WorldContainer(this.renderDetails);
+        this.playerContainer = new PlayerContainer(this.renderDetails);
+        this.bulletContainer = new BulletContainer();
         this.starContainer = new StarContainer();
 
         this.playerGraphic = new PlayerGraphic();
-        this.bulletContainer = new BulletContainer();
 
         this.renderDetails = new RenderDetails();
 
         this.initSocket();
 
-        this.playerGraphic.on('test', console.log.bind(console));
+        this.playerContainer.on(this.playerContainer.onMove, (movement: PlayerMovement) => {
+            this.worldContainer.scaleOut(movement);
+            this.socket.emit('player-movement', movement);
+        });
 
-        this.playerGraphic.emit('test', 'test message');
 
         this.worldContainer.addChild(this.starContainer);
         this.worldContainer.addChild(this.playerContainer);
@@ -52,6 +51,12 @@ export class Game {
     }
 
     state(): void {
+
+        this.playerContainer.tick();
+
+        this.worldContainer.tick();
+
+        /*
         let movement = this.playerContainer.getMovementInfo();
 
         if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
@@ -69,6 +74,7 @@ export class Game {
             this.worldContainer.x = -movement.x * scale + this.renderDetails.halfWidth;
             this.worldContainer.y = -movement.y * scale + this.renderDetails.halfHeight;
         }
+        */
 
         if (this.playerGraphic.isShooting()) {
             let bulletInfo = this.playerGraphic.getBulletInfo();
@@ -77,7 +83,6 @@ export class Game {
 
         this.bulletContainer.tick();
 
-        this.lastMovement = movement;
     }
 
     get stage(): PIXI.Container {
