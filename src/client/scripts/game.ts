@@ -1,3 +1,4 @@
+import {WorldContainer} from './container/world-container';
 import {EnemyGraphic} from './graphics/enemy.graphic';
 import {PlayerCameraContainer} from './container/player-camera.container';
 import {PlayerGraphic} from './graphics/player.graphic';
@@ -10,8 +11,8 @@ import * as io from 'socket.io-client';
 
 export class Game {
 
-    playerContainer: PlayerCameraContainer;
-    baseContainer: PIXI.Container;
+    private playerContainer: PlayerCameraContainer;
+    private worldContainer: WorldContainer;
     private bulletContainer: BulletContainer;
 
     private socket: SocketIOClient.Socket;
@@ -25,7 +26,7 @@ export class Game {
     };
 
     init(): void {
-        this.baseContainer = new PIXI.Container();
+        this.worldContainer = new WorldContainer();
         this.playerContainer = new PlayerCameraContainer();
 
         this.playerGraphic = new PlayerGraphic();
@@ -34,12 +35,9 @@ export class Game {
         this.initSocket();
         this.initStars();
 
-        this.baseContainer.addChild(this.playerContainer);
+        this.worldContainer.addChild(this.playerContainer);
         this.playerContainer.addChild(this.playerGraphic);
-        this.baseContainer.addChild(this.bulletContainer);
-
-        // this.baseContainer.scale.x = 0.8;
-        // this.baseContainer.scale.y = 0.8;
+        this.worldContainer.addChild(this.bulletContainer);
     }
 
 
@@ -49,9 +47,17 @@ export class Game {
         if (this.lastMovement.x !== movement.x || this.lastMovement.y !== movement.y || this.lastMovement.rotation !== movement.rotation) {
             this.socket.emit('player-movement', movement);
 
+            this.worldContainer.scaleOut();
+            let scale = this.worldContainer.getScale();
             // Scale with movement
-            this.baseContainer.x = -movement.x * 0.8 + 256;
-            this.baseContainer.y = -movement.y * 0.8 + 256;
+            this.worldContainer.x = -movement.x * scale + 256;
+            this.worldContainer.y = -movement.y * scale + 256;
+        } else {
+            this.worldContainer.scaleIn();
+            let scale = this.worldContainer.getScale();
+            // Scale with movement
+            this.worldContainer.x = -movement.x * scale + 256;
+            this.worldContainer.y = -movement.y * scale + 256;
         }
 
         if (this.playerGraphic.isShooting()) {
@@ -65,7 +71,7 @@ export class Game {
     }
 
     get stage(): PIXI.Container {
-        return this.baseContainer;
+        return this.worldContainer;
     }
 
     private initSocket(): void {
@@ -81,7 +87,7 @@ export class Game {
             squareGraphic.name = square.name;
 
             otherSquares[square.name] = squareGraphic;
-            this.baseContainer.addChild(squareGraphic);
+            this.worldContainer.addChild(squareGraphic);
         });
 
         this.socket.on('square-moved', (square: PlayerMovement) => {
@@ -97,7 +103,7 @@ export class Game {
         this.socket.on('square-deleted', (id: string) => {
             let square = otherSquares[id];
             if (square) {
-                this.baseContainer.removeChild(square);
+                this.worldContainer.removeChild(square);
                 delete otherSquares[id];
             }
         });
@@ -107,7 +113,7 @@ export class Game {
             // Should be empty anyway, but just in case
             for (let i in otherSquares) {
                 if (otherSquares.hasOwnProperty(i)) {
-                    this.baseContainer.removeChild(otherSquares[i]);
+                    this.worldContainer.removeChild(otherSquares[i]);
                     delete otherSquares[i];
                 }
             }
@@ -120,7 +126,7 @@ export class Game {
                     squareGraphic.rotation = squares[id].rotation;
                     squareGraphic.name = id;
 
-                    this.baseContainer.addChild(squareGraphic);
+                    this.worldContainer.addChild(squareGraphic);
 
                     otherSquares[squares[id].name] = squareGraphic;
                 }
@@ -136,7 +142,7 @@ export class Game {
             for (let k = 0; k < 8; k++) {
                 let x = Random.getInt(i * 62, 62 + i * 62);
                 let y = Random.getInt(k * 62, 62 + k * 62);
-                this.baseContainer.addChild(new StarGraphic(x, y));
+                this.worldContainer.addChild(new StarGraphic(x, y));
             }
         }
     }

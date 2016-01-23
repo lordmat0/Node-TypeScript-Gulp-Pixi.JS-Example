@@ -10,6 +10,7 @@ export class PlayerCameraContainer extends PIXI.Container {
         super();
         this.playerMovementPhysics = new PlayerMovementPhysics();
 
+        // TODO move this out to the game
         this.x = 128;
         this.y = 128;
     }

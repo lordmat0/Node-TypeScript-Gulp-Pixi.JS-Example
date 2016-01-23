@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {Game} from './game';
 
-
 // Create the renderer
 let renderer = PIXI.autoDetectRenderer(512, 512);
 
