@@ -2,7 +2,7 @@ import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {PlayerMovement} from '../../../shared/player-movement';
 
 
-export class PlayerCameraContainer extends PIXI.Container {
+export class PlayerContainer extends PIXI.Container {
 
     private playerMovementPhysics: PlayerMovementPhysics;
 

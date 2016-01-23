@@ -2,7 +2,7 @@ import {StarContainer} from './container/star.container';
 import {RenderDetails} from './render-details';
 import {WorldContainer} from './container/world.container';
 import {EnemyGraphic} from './graphics/enemy.graphic';
-import {PlayerCameraContainer} from './container/player-camera.container';
+import {PlayerContainer} from './container/player.container';
 import {PlayerGraphic} from './graphics/player.graphic';
 import {PlayerMovement} from '../../shared/player-movement';
 import {BulletContainer} from './container/bullet.container';
@@ -11,7 +11,7 @@ import * as io from 'socket.io-client';
 
 export class Game {
 
-    private playerContainer: PlayerCameraContainer;
+    private playerContainer: PlayerContainer;
     private worldContainer: WorldContainer;
     private bulletContainer: BulletContainer;
     private starContainer: StarContainer;
@@ -30,7 +30,7 @@ export class Game {
 
     init(): void {
         this.worldContainer = new WorldContainer();
-        this.playerContainer = new PlayerCameraContainer();
+        this.playerContainer = new PlayerContainer();
         this.starContainer = new StarContainer();
 
         this.playerGraphic = new PlayerGraphic();
@@ -44,8 +44,8 @@ export class Game {
 
         this.playerGraphic.emit('test', 'test message');
 
-        this.worldContainer.addChild(this.playerContainer);
         this.worldContainer.addChild(this.starContainer);
+        this.worldContainer.addChild(this.playerContainer);
         this.worldContainer.addChild(this.bulletContainer);
 
         this.playerContainer.addChild(this.playerGraphic);
