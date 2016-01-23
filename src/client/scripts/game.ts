@@ -1,11 +1,10 @@
+import {StarContainer} from './container/star.container';
 import {RenderDetails} from './render-details';
-import {WorldContainer} from './container/world-container';
+import {WorldContainer} from './container/world.container';
 import {EnemyGraphic} from './graphics/enemy.graphic';
 import {PlayerCameraContainer} from './container/player-camera.container';
 import {PlayerGraphic} from './graphics/player.graphic';
 import {PlayerMovement} from '../../shared/player-movement';
-import {StarGraphic} from './graphics/star.graphic';
-import {Random} from './util/random';
 import {BulletContainer} from './container/bullet.container';
 
 import * as io from 'socket.io-client';
@@ -15,6 +14,7 @@ export class Game {
     private playerContainer: PlayerCameraContainer;
     private worldContainer: WorldContainer;
     private bulletContainer: BulletContainer;
+    private starContainer: StarContainer;
 
     private socket: SocketIOClient.Socket;
 
@@ -31,6 +31,7 @@ export class Game {
     init(): void {
         this.worldContainer = new WorldContainer();
         this.playerContainer = new PlayerCameraContainer();
+        this.starContainer = new StarContainer();
 
         this.playerGraphic = new PlayerGraphic();
         this.bulletContainer = new BulletContainer();
@@ -38,11 +39,16 @@ export class Game {
         this.renderDetails = new RenderDetails();
 
         this.initSocket();
-        this.initStars();
+
+        this.playerGraphic.on('test', console.log.bind(console));
+
+        this.playerGraphic.emit('test', 'test message');
 
         this.worldContainer.addChild(this.playerContainer);
-        this.playerContainer.addChild(this.playerGraphic);
+        this.worldContainer.addChild(this.starContainer);
         this.worldContainer.addChild(this.bulletContainer);
+
+        this.playerContainer.addChild(this.playerGraphic);
     }
 
     state(): void {
@@ -137,17 +143,5 @@ export class Game {
             }
 
         });
-    }
-
-    private initStars(): void {
-        // TODO move into a container
-
-        for (let i = 0; i < 8; i++) {
-            for (let k = 0; k < 8; k++) {
-                let x = Random.getInt(i * 62, 62 + i * 62);
-                let y = Random.getInt(k * 62, 62 + k * 62);
-                this.worldContainer.addChild(new StarGraphic(x, y));
-            }
-        }
     }
 }
