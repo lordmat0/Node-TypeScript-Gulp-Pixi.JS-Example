@@ -1,6 +1,5 @@
 import {RenderDetails} from './render-details';
 import {Game} from './game';
-import * as PIXI from 'pixi.js';
 
 // Create the renderer
 let renderDetails = new RenderDetails();

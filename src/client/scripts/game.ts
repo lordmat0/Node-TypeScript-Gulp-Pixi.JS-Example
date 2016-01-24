@@ -5,7 +5,6 @@ import {WorldContainer} from './container/world.container';
 import {PlayerContainer} from './container/player.container';
 import {RenderDetails} from './render-details';
 import {PlayerMovement} from '../../shared/player-movement';
-import * as io from 'socket.io-client';
 
 export class Game {
 
