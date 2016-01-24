@@ -32,8 +32,9 @@ class PlayerSocket {
 
         let square: PlayerMovement = {
             name: this.socket.id,
+            rotation: 90,
             x: -50,
-            y: -50
+            y: -50,
         };
 
         PlayerSocket.squares[this.socket.id] = square;
