@@ -23,7 +23,7 @@ export class Game {
 
     constructor(private renderDetails: RenderDetails) {
         this.initContainers();
-        this.initSocket();
+        // this.initSocket();
         this.initEvents();
         this.initNestedContainers();
     }
@@ -59,13 +59,13 @@ export class Game {
     private initEvents(): void {
         this.playerContainer.on(this.playerContainer.onMove, (movement: PlayerMovement) => {
             this.worldContainer.scaleOut(movement);
-            this.socket.emit('player-movement', movement);
         });
     }
 
     private initNestedContainers(): void {
         this.worldContainer.addChild(this.starContainer);
         this.worldContainer.addChild(this.playerContainer);
+        this.worldContainer.addChild(this.enemyContainer);
         this.worldContainer.addChild(this.bulletContainer);
     }
 

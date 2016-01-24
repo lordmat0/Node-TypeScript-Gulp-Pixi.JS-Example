@@ -3,12 +3,15 @@ import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {PlayerGraphic} from '../graphics/player.graphic';
 import {PlayerMovement} from '../../../shared/player-movement';
 
+import * as io from 'socket.io-client';
+
 
 export class PlayerContainer extends PIXI.Container {
     onMove = 'on-move';
 
     private playerMovementPhysics: PlayerMovementPhysics;
     private playerGraphic: PlayerGraphic;
+    private socket: SocketIOClient.Socket;
 
     constructor(public renderDetails: RenderDetails) {
         super();
@@ -19,6 +22,7 @@ export class PlayerContainer extends PIXI.Container {
         this.y = renderDetails.halfHeight;
 
         this.addChild(this.playerGraphic);
+        this.socket = io();
     }
 
     tick(): void {
@@ -33,6 +37,8 @@ export class PlayerContainer extends PIXI.Container {
             this.y = playerMovement.y;
             this.rotation = playerMovement.rotation;
             this.emit(this.onMove, playerMovement);
+            this.socket.emit('player-movement', playerMovement);
+
         }
 
         return playerMovement;
