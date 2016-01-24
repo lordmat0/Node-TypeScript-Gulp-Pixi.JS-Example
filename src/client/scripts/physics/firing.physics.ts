@@ -13,8 +13,11 @@ export class FiringPhysics {
     }
 
     canShoot(): boolean {
-        return this.bulletsShot < this.MAX_BULLETS_OUT
-            && this.spaceController.isDown;
+        return this.bulletsShot < this.MAX_BULLETS_OUT;
+    }
+
+    isShooting(): boolean {
+        return this.spaceController.isDown;
     }
 
 }

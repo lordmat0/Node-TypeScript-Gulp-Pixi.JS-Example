@@ -31,7 +31,7 @@ export class BulletContainer extends PIXI.Container {
         // Remove bullets that are out of bounds
     }
 
-    private addBullet(bulletMovement: BulletMovement): void {
+    addBullet(bulletMovement: BulletMovement): void {
         let x = bulletMovement.x;
         let y = bulletMovement.y;
         let rotation = bulletMovement.rotation;
@@ -49,7 +49,7 @@ export class BulletContainer extends PIXI.Container {
     }
 
     private moveBullet(bullet: BulletMovement): void {
-
+        // todo 
     }
 
     private removeBullet(name: string): void {

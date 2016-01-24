@@ -1,3 +1,4 @@
+import {BulletMovement} from '../../shared/bullet-movement';
 import {EnemyContainer} from './container/enemy.container';
 import {StarContainer} from './container/star.container';
 import {BulletContainer} from './container/bullet.container';
@@ -58,6 +59,10 @@ export class Game {
     private initEvents(): void {
         this.playerContainer.on(this.playerContainer.onMove, (movement: PlayerMovement) => {
             this.worldContainer.scaleOut(movement);
+        });
+
+        this.playerContainer.on(this.playerContainer.onShot, (bullet: BulletMovement) => {
+            this.bulletContainer.addBullet(bullet);
         });
     }
 

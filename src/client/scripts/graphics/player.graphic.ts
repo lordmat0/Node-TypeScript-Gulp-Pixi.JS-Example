@@ -15,7 +15,11 @@ export class PlayerGraphic extends PIXI.Graphics {
     }
 
     isShooting(): boolean {
-        return this.firingPhysics.canShoot();
+        if (this.firingPhysics.canShoot()) {
+            return this.firingPhysics.isShooting();
+        }
+
+        return false;
     }
 
     getBulletInfo(): BulletMovement {

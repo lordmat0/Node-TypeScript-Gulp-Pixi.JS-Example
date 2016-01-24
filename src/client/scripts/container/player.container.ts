@@ -1,3 +1,4 @@
+import {BulletPhysics} from '../physics/bullet.physics';
 import {RenderDetails} from '../render-details';
 import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {PlayerGraphic} from '../graphics/player.graphic';
@@ -5,8 +6,10 @@ import {PlayerMovement} from '../../../shared/player-movement';
 
 export class PlayerContainer extends PIXI.Container {
     onMove = 'on-move';
+    onShot = 'on-shot';
 
     private playerMovementPhysics: PlayerMovementPhysics;
+    private bulletPhysics: BulletPhysics;
     private playerGraphic: PlayerGraphic;
 
     constructor(private renderDetails: RenderDetails, private socket: SocketIOClient.Socket) {
@@ -14,6 +17,8 @@ export class PlayerContainer extends PIXI.Container {
         this.initSocket();
 
         this.playerMovementPhysics = new PlayerMovementPhysics();
+        this.bulletPhysics = new BulletPhysics();
+
         this.playerGraphic = new PlayerGraphic();
 
         this.x = renderDetails.halfWidth;
@@ -24,9 +29,17 @@ export class PlayerContainer extends PIXI.Container {
 
     tick(): void {
         this.getMovementInfo();
+        this.getBulletInfo();
     }
 
-    getMovementInfo(): PlayerMovement {
+    private getBulletInfo(): void {
+        if (this.playerGraphic.isShooting()) {
+            this.emit(this.onShot,
+                this.bulletPhysics.calculateBullet(this.x, this.y, this.rotation));
+        }
+    }
+
+    private getMovementInfo(): void {
         let playerMovement = this.playerMovementPhysics.calculate(this.x, this.y, this.rotation);
 
         if (this.hasMoved(playerMovement)) {
@@ -35,8 +48,6 @@ export class PlayerContainer extends PIXI.Container {
             this.rotation = playerMovement.rotation;
             this.emit(this.onMove, playerMovement);
         }
-
-        return playerMovement;
     }
 
     private hasMoved(movement: PlayerMovement): boolean {
