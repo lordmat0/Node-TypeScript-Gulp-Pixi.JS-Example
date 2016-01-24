@@ -33,10 +33,6 @@ export class EnemyGraphic extends PIXI.Graphics {
         this.lineTo(-1, 32 + this.SIZE);
         this.lineTo(this.SIZE, this.SIZE);
         this.endFill();
-
-        // Starting coordinates
-        this.x = 170;
-        this.y = 170;
     }
 
 }
