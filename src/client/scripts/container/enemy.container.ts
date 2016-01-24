@@ -1,6 +1,5 @@
 import {EnemyGraphic} from '../graphics/enemy.graphic';
 import {PlayerMovement} from '../../../shared/player-movement';
-import * as io from 'socket.io-client';
 
 export class EnemyContainer extends PIXI.Container {
 
@@ -9,21 +8,13 @@ export class EnemyContainer extends PIXI.Container {
         this.initSocket();
     }
 
-    addEnemy(player: PlayerMovement): void {
-        // TODO move this into the constructor for EnemyGraphic
-        let squareGraphic = new EnemyGraphic();
-        squareGraphic.x = player.x;
-        squareGraphic.y = player.y;
-        squareGraphic.rotation = player.rotation;
-        squareGraphic.name = player.name;
-
-        this.addChild(squareGraphic);
+    private addEnemy(player: PlayerMovement): void {
+        this.addChild(new EnemyGraphic(player.x, player.y, player.rotation,
+            player.name));
     }
 
-    addEnemys(players: PlayerMovement[]): void {
-        // TODO remove enemys before adding any
-        // TODO update typings tsd to be an object hashmap rather than an array
-        // players.forEach((player: PlayerMovement) => this.addEnemy(player));
+    private addEnemys(players: PlayerMovement[]): void {
+        this.children = [];
 
         for (let i in players) {
             if (players.hasOwnProperty(i)) {
@@ -32,19 +23,21 @@ export class EnemyContainer extends PIXI.Container {
         }
     }
 
-    moveEnemy(player: PlayerMovement): void {
+    private moveEnemy(player: PlayerMovement): void {
         let enemyGraphic = <EnemyGraphic>this.getChildByName(player.name);
         enemyGraphic.x = player.x;
         enemyGraphic.y = player.y;
         enemyGraphic.rotation = player.rotation;
     }
 
+    private removeEnemy(playerId: string): void {
+        this.removeChild(this.getChildByName(playerId));
+    }
 
     private initSocket(): void {
-
         this.socket.on('new-square', this.addEnemy.bind(this));
         this.socket.on('square-list', this.addEnemys.bind(this));
-        this.socket.on('square-deleted', this.removeChild.bind(this));
+        this.socket.on('square-deleted', this.removeEnemy.bind(this));
         this.socket.on('square-moved', this.moveEnemy.bind(this));
     }
 }

@@ -4,7 +4,9 @@ export class EnemyGraphic extends PIXI.Graphics {
 
     private SIZE = 32;
 
-    constructor() {
+    constructor(public x: number, public y: number,
+        public rotation: number, public name: string) {
+
         super();
         this.initShape();
     }
