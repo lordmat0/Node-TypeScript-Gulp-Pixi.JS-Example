@@ -1,6 +1,4 @@
 export class EnemyGraphic extends PIXI.Graphics {
-    // TODO change this to name
-    id: string;
 
     private SIZE = 32;
 
