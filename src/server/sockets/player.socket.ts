@@ -10,14 +10,11 @@ class PlayerSocket {
     }
 
     private playerMovement(movement: PlayerMovement) {
-        let squareItem = PlayerSocket.squares[this.socket.id];
+        PlayerSocket.squares[this.socket.id] = movement;
 
-        squareItem.x = movement.x;
-        squareItem.y = movement.y;
-        squareItem.rotation = movement.rotation;
+        console.log(movement, 'square-moved');
 
-        // console.log(squareItem);
-        this.socket.broadcast.emit('square-moved', squareItem);
+        this.socket.broadcast.emit('square-moved', movement);
     }
 
     private disconnect(): void {
@@ -29,7 +26,6 @@ class PlayerSocket {
 
     private initSocket(): void {
         console.log(this.socket.id, 'connection');
-        this.socket.emit('square-list', PlayerSocket.squares);
 
         let square: PlayerMovement = {
             name: this.socket.id,
@@ -38,6 +34,9 @@ class PlayerSocket {
         };
 
         PlayerSocket.squares[this.socket.id] = square;
+
+        this.socket.emit('square-list', PlayerSocket.squares);
+
 
         this.socket.broadcast.emit('new-square', square);
     }

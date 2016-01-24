@@ -6,8 +6,9 @@ export class BulletContainer extends PIXI.Container {
 
     private bulletPhysics: BulletPhysics;
 
-    constructor() {
+    constructor(private socket: SocketIOClient.Socket) {
         super();
+        this.initSocket();
         this.bulletPhysics = new BulletPhysics();
     }
 
@@ -30,15 +31,40 @@ export class BulletContainer extends PIXI.Container {
         // Remove bullets that are out of bounds
     }
 
-    addBullet(bulletMovement: BulletMovement): void {
+    private addBullet(bulletMovement: BulletMovement): void {
         let x = bulletMovement.x;
         let y = bulletMovement.y;
         let rotation = bulletMovement.rotation;
         this.addChild(new BulletGraphic(x, y, rotation));
     }
 
+    private addBullets(bullets: BulletMovement[]): void {
+        this.children = [];
+
+        for (let i in bullets) {
+            if (bullets.hasOwnProperty(i)) {
+                this.addBullet(bullets[i]);
+            }
+        }
+    }
+
+    private moveBullet(bullet: BulletMovement): void {
+
+    }
+
+    private removeBullet(name: string): void {
+        this.removeChild(this.getChildByName(name));
+    }
+
     // private outOfBounds(bullet: BulletGraphic): boolean {
     //     return false;
     // }
+
+    private initSocket(): void {
+        this.socket.on('bullet-create', this.addBullet.bind(this));
+        this.socket.on('bullet-list', this.addBullets.bind(this));
+        this.socket.on('bullet-deleted', this.removeBullet.bind(this));
+        this.socket.on('bullet-moved', this.moveBullet.bind(this));
+    }
 
 }

@@ -1,6 +1,7 @@
 
 export class BulletGraphic extends PIXI.Graphics {
-
+    // Does the client even know who this is?
+    public owner: string;
     private SIZE = 5;
 
     constructor(public x: number, public y: number, public rotation: number) {

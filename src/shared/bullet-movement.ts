@@ -4,5 +4,4 @@ export interface BulletMovement {
     x: number;
     y: number;
     rotation?: number;
-
 }
