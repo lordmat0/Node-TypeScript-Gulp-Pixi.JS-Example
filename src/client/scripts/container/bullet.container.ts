@@ -31,6 +31,11 @@ export class BulletContainer extends PIXI.Container {
         // Remove bullets that are out of bounds
     }
 
+    createBullet(bulletMovement: BulletMovement): void {
+        this.addBullet(bulletMovement);
+        this.socket.emit('bullet-create', bulletMovement);
+    }
+
     addBullet(bulletMovement: BulletMovement): void {
         let x = bulletMovement.x;
         let y = bulletMovement.y;
@@ -49,7 +54,7 @@ export class BulletContainer extends PIXI.Container {
     }
 
     private moveBullet(bullet: BulletMovement): void {
-        // todo 
+        // todo
     }
 
     private removeBullet(name: string): void {
@@ -64,7 +69,7 @@ export class BulletContainer extends PIXI.Container {
         this.socket.on('bullet-create', this.addBullet.bind(this));
         this.socket.on('bullet-list', this.addBullets.bind(this));
         this.socket.on('bullet-deleted', this.removeBullet.bind(this));
-        this.socket.on('bullet-moved', this.moveBullet.bind(this));
+        this.socket.on('bullet-add', this.addBullet.bind(this));
     }
 
 }

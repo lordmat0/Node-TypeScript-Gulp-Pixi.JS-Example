@@ -17,5 +17,4 @@ export class BulletPhysics {
             y: y
         };
     }
-
 }

@@ -62,7 +62,7 @@ export class Game {
         });
 
         this.playerContainer.on(this.playerContainer.onShot, (bullet: BulletMovement) => {
-            this.bulletContainer.addBullet(bullet);
+            this.bulletContainer.createBullet(bullet);
         });
     }
 

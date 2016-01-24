@@ -1,9 +1,9 @@
-import {PlayerBulletMap} from '../../shared/PlayerBulletMap';
+import {PlayerBulletMap} from '../../shared/player-bullet-map';
 import {BulletMovement} from '../../shared/bullet-movement';
 
 class BulletSocket {
 
-    private static bullets: PlayerBulletMap;
+    private static bullets: PlayerBulletMap = {};
 
     constructor(private socket: SocketIO.Socket) {
         this.initSocket();
@@ -19,6 +19,7 @@ class BulletSocket {
 
     private bulletCreate(movement: BulletMovement) {
         BulletSocket.bullets[this.socket.id][movement.id] = movement;
+        this.socket.broadcast.emit('bullet-add', movement);
     }
 
     private bulletDeleted(movement: BulletMovement) {

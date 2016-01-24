@@ -1,9 +1,10 @@
+import BulletSocket from './bullet.socket';
 import PlayerSocket from './player.socket';
 
 class HandlerSocket {
 
     private playerSocket: PlayerSocket;
-    // private bulletSocket: BulletSocket;
+    private bulletSocket: BulletSocket;
 
     constructor(private io: SocketIO.Server) {
         this.initSocket();
@@ -11,7 +12,7 @@ class HandlerSocket {
 
     private connection(socket: SocketIO.Socket): void {
         this.playerSocket = new PlayerSocket(socket);
-        // this.bulletSocket = new BulletSocket(socket);
+        this.bulletSocket = new BulletSocket(socket);
     }
 
     private initSocket(): void {
