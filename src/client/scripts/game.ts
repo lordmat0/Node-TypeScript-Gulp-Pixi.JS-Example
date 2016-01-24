@@ -22,6 +22,7 @@ export class Game {
     private otherPlayerGraphics: { [name: string]: EnemyGraphic } = {};
 
     constructor(private renderDetails: RenderDetails) {
+        this.initS();
         this.initContainers();
         // this.initSocket();
         this.initEvents();
@@ -47,11 +48,15 @@ export class Game {
         return this.worldContainer;
     }
 
+    private initS(): void {
+        this.socket = io();
+    }
+
     private initContainers(): void {
 
         this.worldContainer = new WorldContainer(this.renderDetails);
-        this.playerContainer = new PlayerContainer(this.renderDetails);
-        this.enemyContainer = new EnemyContainer();
+        this.playerContainer = new PlayerContainer(this.renderDetails, this.socket);
+        this.enemyContainer = new EnemyContainer(this.socket);
         this.bulletContainer = new BulletContainer();
         this.starContainer = new StarContainer();
     }

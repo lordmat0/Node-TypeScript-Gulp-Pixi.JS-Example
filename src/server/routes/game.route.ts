@@ -34,7 +34,7 @@ function init(io: SocketIO.Server) {
             squareItem.rotation = data.rotation;
 
             console.log(squareItem);
-            io.sockets.emit('square-moved', squareItem);
+            socket.broadcast.emit('square-moved', squareItem);
         });
 
         socket.on('disconnect', () => {

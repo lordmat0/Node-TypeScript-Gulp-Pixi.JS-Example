@@ -4,9 +4,7 @@ import * as io from 'socket.io-client';
 
 export class EnemyContainer extends PIXI.Container {
 
-    private socket: SocketIOClient.Socket;
-
-    constructor() {
+    constructor(private socket: SocketIOClient.Socket) {
         super();
         this.initSocket();
     }
@@ -43,7 +41,6 @@ export class EnemyContainer extends PIXI.Container {
 
 
     private initSocket(): void {
-        this.socket = io();
 
         this.socket.on('new-square', this.addEnemy.bind(this));
         this.socket.on('square-list', this.addEnemys.bind(this));
