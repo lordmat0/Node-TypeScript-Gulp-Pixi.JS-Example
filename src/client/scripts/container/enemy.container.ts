@@ -16,8 +16,6 @@ export class EnemyContainer extends PIXI.Container {
     private addEnemys(players: PlayerMovement[]): void {
         this.children = [];
 
-        console.log('enemys', players);
-
         for (let i in players) {
             if (players.hasOwnProperty(i)) {
                 this.addEnemy(players[i]);
