@@ -12,3 +12,7 @@
 /// <reference path="../typings/socket.io/socket.io.d.ts" />
 /// <reference path="../typings/socket.io-client/socket.io-client.d.ts" />
 /// <reference path="../typings/pixi.js/pixi.js.d.ts" />
+/// <reference path="../node_modules/immutable/dist/immutable.d.ts" />
+/// <reference path="../node_modules/tslint/lib/tslint.d.ts" />
+/// <reference path="../typings/assertion-error/assertion-error.d.ts" />
+/// <reference path="../typings/superagent/superagent.d.ts" />

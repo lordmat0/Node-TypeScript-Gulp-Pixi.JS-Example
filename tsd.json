@@ -31,6 +31,9 @@
     },
     "gulp/gulp.d.ts": {
       "commit": "3d2916191781fe400176a030c03722ac4b87f1c1"
+    },
+    "pixi.js/pixi.js.d.ts": {
+      "commit": "7fffbd3e040a93c244777e3be04cd6223ac69301"
     }
   }
 }
