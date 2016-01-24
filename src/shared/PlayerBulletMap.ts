@@ -5,5 +5,5 @@ export interface PlayerBulletMap {
         [playerId: string]: {
             [bulletId: string]: BulletMovement
         }
-    }
+    };
 }
