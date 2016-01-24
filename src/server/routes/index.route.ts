@@ -16,10 +16,6 @@ function init(io: SocketIO.Server) {
         res.json({ health: 'health', status: 200 });
     });
 
-    // io.on('connection', (socket) => {
-    //     console.log('connected index');
-    // });
-    
     return index;
 }
 

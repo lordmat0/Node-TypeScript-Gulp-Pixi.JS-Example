@@ -3,7 +3,7 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import {join} from 'path';
 import index from './routes/index.route';
-import game from './routes/game.route';
+import HandlerSocket from './sockets/handler.socket';
 import cookieParser = require('cookie-parser'); // this module doesn't use the ES6 default export yet
 import socket from './socket';
 
@@ -18,9 +18,11 @@ app.use(cookieParser());
 console.log(__dirname);
 app.use(express.static(join(__dirname, '../client/')));
 
-
+// Paths
 app.use('/', index(socket.io));
-app.use('/game', game(socket.io));
+
+// Sockets
+let handler = new HandlerSocket(socket.io);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
