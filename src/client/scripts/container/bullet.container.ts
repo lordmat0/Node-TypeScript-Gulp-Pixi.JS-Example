@@ -1,4 +1,4 @@
-import {CollisionDetail} from '../../../shared/collision-details';
+import {CollisionDetail} from '../../../shared/collision-detail';
 import {BulletGraphic} from '../graphics/bullet.graphic';
 import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
@@ -30,11 +30,11 @@ export class BulletContainer extends PIXI.Container {
                     bulletGraphic.x = bulletMovement.x;
                     bulletGraphic.y = bulletMovement.y;
                     bulletGraphic.rotation = bulletMovement.rotation;
-                    bullets.push({
-                        bulletMovement,
-                        height: bulletGraphic.height,
-                        width: bulletGraphic.width
-                    });
+
+                    let collisionDetail = <CollisionDetail>bulletMovement;
+                    collisionDetail.height = bulletGraphic.height;
+                    collisionDetail.width = bulletGraphic.width;
+                    bullets.push(collisionDetail);
 
                 } else {
                     // should this really do this? maybe the server should check instead

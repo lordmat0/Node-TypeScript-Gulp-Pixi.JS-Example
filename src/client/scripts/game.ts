@@ -1,4 +1,4 @@
-import {CollisionDetail} from '../../shared/collision-details';
+import {CollisionDetail} from '../../shared/collision-detail';
 import {BulletMovement} from '../../shared/bullet-movement';
 import {EnemyContainer} from './container/enemy.container';
 import {StarContainer} from './container/star.container';
