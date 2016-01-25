@@ -1,17 +1,19 @@
-import {BulletMovement} from '../../../shared/bullet-movement';
+import {CollisionDetail} from '../../../shared/collision-detail';
+import {CollisionDetection} from '../util/collision-detection';
 import {BulletPhysics} from '../physics/bullet.physics';
 import {RenderDetails} from '../render-details';
 import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {PlayerGraphic} from '../graphics/player.graphic';
 import {PlayerMovement} from '../../../shared/player-movement';
 
-export class PlayerContainer extends PIXI.Container {
+export class PlayerContainer extends PIXI.Container implements CollisionDetail {
     onMove = 'on-move';
     onShot = 'on-shot';
 
     private playerMovementPhysics: PlayerMovementPhysics;
     private bulletPhysics: BulletPhysics;
     private playerGraphic: PlayerGraphic;
+    private collisionDetection: CollisionDetection;
 
     constructor(private renderDetails: RenderDetails, private socket: SocketIOClient.Socket) {
         super();
@@ -21,6 +23,8 @@ export class PlayerContainer extends PIXI.Container {
         this.bulletPhysics = new BulletPhysics();
 
         this.playerGraphic = new PlayerGraphic();
+
+        this.collisionDetection = new CollisionDetection();
 
         this.x = renderDetails.halfWidth;
         this.y = renderDetails.halfHeight;
@@ -33,8 +37,14 @@ export class PlayerContainer extends PIXI.Container {
         this.getBulletInfo();
     }
 
-    handleHits(bullets: BulletMovement[]) {
-        // console.log(bullets);
+    handleHits(bullets: CollisionDetail[]) {
+        bullets.forEach((bullet: CollisionDetail) => {
+            if (this.collisionDetection.rectangleHasHit(this, bullet)) {
+                console.log('hit');
+            } else {
+                // console.log('miss');
+            }
+        });
     }
 
     private getBulletInfo(): void {

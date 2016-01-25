@@ -1,3 +1,4 @@
+import {CollisionDetail} from '../../../shared/collision-details';
 import {BulletGraphic} from '../graphics/bullet.graphic';
 import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
@@ -19,7 +20,7 @@ export class BulletContainer extends PIXI.Container {
     }
 
     tick(): void {
-        let bullets: BulletMovement[] = [];
+        let bullets: CollisionDetail[] = [];
         for (let i in this.children) {
             if (this.children.hasOwnProperty(i)) {
                 let bulletGraphic = <BulletGraphic>this.children[i];
@@ -29,7 +30,12 @@ export class BulletContainer extends PIXI.Container {
                     bulletGraphic.x = bulletMovement.x;
                     bulletGraphic.y = bulletMovement.y;
                     bulletGraphic.rotation = bulletMovement.rotation;
-                    bullets.push(bulletMovement);
+                    bullets.push({
+                        bulletMovement,
+                        height: bulletGraphic.height,
+                        width: bulletGraphic.width
+                    });
+
                 } else {
                     // should this really do this? maybe the server should check instead
                     // this.socket.emit('bullet-deleted', bulletMovement);

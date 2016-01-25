@@ -1,3 +1,4 @@
+import {CollisionDetail} from '../../shared/collision-details';
 import {BulletMovement} from '../../shared/bullet-movement';
 import {EnemyContainer} from './container/enemy.container';
 import {StarContainer} from './container/star.container';
@@ -59,7 +60,7 @@ export class Game {
             this.bulletContainer.createBullet(bullet);
         });
 
-        this.bulletContainer.on(this.bulletContainer.onTick, (bullets: BulletMovement) => {
+        this.bulletContainer.on(this.bulletContainer.onTick, (bullets: CollisionDetail[]) => {
             this.playerContainer.handleHits(bullets);
         });
     }
