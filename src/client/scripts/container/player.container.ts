@@ -6,7 +6,7 @@ import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {PlayerGraphic} from '../graphics/player.graphic';
 import {PlayerMovement} from '../../../shared/player-movement';
 
-export class PlayerContainer extends PIXI.Container implements CollisionDetail {
+export class PlayerContainer extends PIXI.Container {
     onMove = 'on-move';
     onShot = 'on-shot';
 
@@ -38,8 +38,18 @@ export class PlayerContainer extends PIXI.Container implements CollisionDetail {
     }
 
     handleHits(bullets: CollisionDetail[]) {
+        let collisionDetail: CollisionDetail = {
+            height: 32,
+            name: 'not sure',
+            width: 32,
+            x: this.x,
+            y: this.y
+        };
+
+
+
         bullets.forEach((bullet: CollisionDetail) => {
-            if (this.collisionDetection.rectangleHasHit(this, bullet)) {
+            if (this.collisionDetection.rectangleHasHit(collisionDetail, bullet)) {
                 console.log('hit');
             } else {
                 // console.log('miss');
