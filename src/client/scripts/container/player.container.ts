@@ -34,7 +34,7 @@ export class PlayerContainer extends PIXI.Container {
     }
 
     handleHits(bullets: BulletMovement[]) {
-        //
+        // console.log(bullets);
     }
 
     private getBulletInfo(): void {

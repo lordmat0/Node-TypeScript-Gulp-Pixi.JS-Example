@@ -7,6 +7,11 @@ export class BulletContainer extends PIXI.Container {
 
     private bulletPhysics: BulletPhysics;
 
+    private MIN_X = -1000;
+    private MIN_Y = -1000;
+    private MAX_X = 1000;
+    private MAX_Y = 1000;
+
     constructor(private socket: SocketIOClient.Socket) {
         super();
         this.initSocket();
@@ -19,11 +24,17 @@ export class BulletContainer extends PIXI.Container {
             if (this.children.hasOwnProperty(i)) {
                 let bulletGraphic = <BulletGraphic>this.children[i];
                 let bulletMovement = this.bulletPhysics.calculateBullet(bulletGraphic.x, bulletGraphic.y, bulletGraphic.rotation);
-                bulletGraphic.x = bulletMovement.x;
-                bulletGraphic.y = bulletMovement.y;
-                bulletGraphic.rotation = bulletMovement.rotation;
 
-                bullets.push(bulletMovement);
+                if (this.inBounds(bulletMovement)) {
+                    bulletGraphic.x = bulletMovement.x;
+                    bulletGraphic.y = bulletMovement.y;
+                    bulletGraphic.rotation = bulletMovement.rotation;
+                    bullets.push(bulletMovement);
+                } else {
+                    // should this really do this? maybe the server should check instead
+                    // this.socket.emit('bullet-deleted', bulletMovement);
+                    this.removeChild(bulletGraphic);
+                }
             }
         }
         // Remove bullets that are out of bounds
@@ -43,6 +54,13 @@ export class BulletContainer extends PIXI.Container {
         let y = bulletMovement.y;
         let rotation = bulletMovement.rotation;
         this.addChild(new BulletGraphic(x, y, rotation));
+    }
+
+    private inBounds(bulletMovement: BulletMovement): boolean {
+        return bulletMovement.x > this.MIN_X &&
+            bulletMovement.x < this.MAX_X &&
+            bulletMovement.y > this.MIN_Y &&
+            bulletMovement.y < this.MAX_Y;
     }
 
     private addBullets(bullets: BulletMovement[]): void {
