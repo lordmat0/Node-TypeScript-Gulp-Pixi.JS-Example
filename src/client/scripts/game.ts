@@ -30,12 +30,6 @@ export class Game {
 
         this.worldContainer.tick();
 
-
-        // if (this.playerGraphic.isShooting()) {
-        //     let bulletInfo = this.playerGraphic.getBulletInfo();
-        //     this.bulletContainer.addBullet(bulletInfo);
-        // }
-
         this.bulletContainer.tick();
     }
 
@@ -63,6 +57,10 @@ export class Game {
 
         this.playerContainer.on(this.playerContainer.onShot, (bullet: BulletMovement) => {
             this.bulletContainer.createBullet(bullet);
+        });
+
+        this.bulletContainer.on(this.bulletContainer.onTick, (bullets: BulletMovement) => {
+            this.playerContainer.handleHits(bullets);
         });
     }
 

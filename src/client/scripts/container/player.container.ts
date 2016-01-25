@@ -1,3 +1,4 @@
+import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
 import {RenderDetails} from '../render-details';
 import {PlayerMovementPhysics} from '../physics/player-movement.physics';
@@ -30,6 +31,10 @@ export class PlayerContainer extends PIXI.Container {
     tick(): void {
         this.getMovementInfo();
         this.getBulletInfo();
+    }
+
+    handleHits(bullets: BulletMovement[]) {
+        //
     }
 
     private getBulletInfo(): void {

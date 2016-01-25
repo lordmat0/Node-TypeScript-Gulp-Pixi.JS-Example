@@ -3,6 +3,7 @@ import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
 
 export class BulletContainer extends PIXI.Container {
+    onTick = 'onTick';
 
     private bulletPhysics: BulletPhysics;
 
@@ -13,6 +14,7 @@ export class BulletContainer extends PIXI.Container {
     }
 
     tick(): void {
+        let bullets: BulletMovement[] = [];
         for (let i in this.children) {
             if (this.children.hasOwnProperty(i)) {
                 let bulletGraphic = <BulletGraphic>this.children[i];
@@ -20,15 +22,15 @@ export class BulletContainer extends PIXI.Container {
                 bulletGraphic.x = bulletMovement.x;
                 bulletGraphic.y = bulletMovement.y;
                 bulletGraphic.rotation = bulletMovement.rotation;
+
+                bullets.push(bulletMovement);
             }
         }
-
-
-        // move bullets
-
-        // a way to check if bullets have hit anything?
-
         // Remove bullets that are out of bounds
+
+
+        // emit bullets
+        this.emit(this.onTick, bullets);
     }
 
     createBullet(bulletMovement: BulletMovement): void {
