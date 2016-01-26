@@ -3,7 +3,7 @@ import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
-    private SIZE = 32;
+    SIZE = 32;
     private firingPhysics: FiringPhysics;
     private bulletPhysics: BulletPhysics;
 

@@ -15,6 +15,8 @@ export class PlayerContainer extends PIXI.Container {
     private playerGraphic: PlayerGraphic;
     private collisionDetection: CollisionDetection;
 
+    private testBox: PIXI.Graphics;
+
     constructor(private renderDetails: RenderDetails, private socket: SocketIOClient.Socket) {
         super();
         this.initSocket();
@@ -30,6 +32,17 @@ export class PlayerContainer extends PIXI.Container {
         this.y = renderDetails.halfHeight;
 
         this.addChild(this.playerGraphic);
+
+
+        // let boundries = new PIXI.Graphics();
+        // boundries.lineStyle(4, 0xf00f00, 1);
+        // boundries.drawRect(0, 0, this.width, this.height);
+
+        // boundries.lineStyle(4, 0x700A05, 1);
+        // boundries.drawRect(0, 0, this.width * 2, this.height * 2);
+        this.testBox = new PIXI.Graphics();
+
+        // this.addChild(boundries);
     }
 
     tick(): void {
@@ -38,13 +51,23 @@ export class PlayerContainer extends PIXI.Container {
     }
 
     handleHits(bullets: CollisionDetail[]) {
+        let shipSize = this.playerGraphic.SIZE;
+
         let collisionDetail: CollisionDetail = {
-            height: 32,
+            height: shipSize,
             name: 'not sure',
-            width: 32,
-            x: this.x,
-            y: this.y
+            width: shipSize,
+            x: this.x - (shipSize / 2),
+            y: this.y - (shipSize / 2)
         };
+
+        this.removeChild(this.testBox);
+
+        this.testBox = new PIXI.Graphics();
+        this.testBox.lineStyle(4, 0xf00f00, 1);
+        this.testBox.drawRect(-16, -16, 32, 32);
+
+        this.addChild(this.testBox);
 
 
 
