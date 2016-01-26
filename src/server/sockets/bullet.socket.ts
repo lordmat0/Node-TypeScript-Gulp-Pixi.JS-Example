@@ -18,6 +18,8 @@ class BulletSocket {
     }
 
     private bulletCreate(movement: BulletMovement) {
+        // movement.id is undefined as the client does now know
+        // their own id or because the movement.id is just never set
         BulletSocket.bullets[this.socket.id][movement.id] = movement;
         this.socket.broadcast.emit('bullet-add', movement);
     }

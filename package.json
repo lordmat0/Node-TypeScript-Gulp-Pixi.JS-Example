@@ -4,8 +4,9 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node ./src/www.js",
-        "test": "mocha ./tests/test.js"
+        "start": "node ./src/server/www.js",
+        "test": "mocha ./tests/test.js",
+        "debug": "node-debug src/server/www.js"
     },
     "devDependencies": {
         "browser-sync": "^2.8.2",
@@ -22,6 +23,7 @@
         "marked": "^0.3.5",
         "mocha": "^2.2.5",
         "nodemon": "^1.4.0",
+        "node-inspector": "0.12.5",
         "supertest": "~1.1.0",
         "typescript": "^1.7.5",
         "tslint": "~3.2.1"
