@@ -15,7 +15,7 @@ export class PlayerContainer extends PIXI.Container {
     private playerGraphic: PlayerGraphic;
     private collisionDetection: CollisionDetection;
 
-    private testBox: PIXI.Graphics;
+    private hitBox: PIXI.Graphics;
 
     constructor(private renderDetails: RenderDetails, private socket: SocketIOClient.Socket) {
         super();
@@ -33,16 +33,7 @@ export class PlayerContainer extends PIXI.Container {
 
         this.addChild(this.playerGraphic);
 
-
-        // let boundries = new PIXI.Graphics();
-        // boundries.lineStyle(4, 0xf00f00, 1);
-        // boundries.drawRect(0, 0, this.width, this.height);
-
-        // boundries.lineStyle(4, 0x700A05, 1);
-        // boundries.drawRect(0, 0, this.width * 2, this.height * 2);
-        this.testBox = new PIXI.Graphics();
-
-        // this.addChild(boundries);
+        this.hitBox = new PIXI.Graphics();
     }
 
     tick(): void {
@@ -61,13 +52,6 @@ export class PlayerContainer extends PIXI.Container {
             y: this.y - (shipSize / 2)
         };
 
-        this.removeChild(this.testBox);
-
-        this.testBox = new PIXI.Graphics();
-        this.testBox.lineStyle(4, 0xf00f00, 1);
-        this.testBox.drawRect(-16, -16, 32, 32);
-
-        this.addChild(this.testBox);
 
 
 
@@ -94,6 +78,9 @@ export class PlayerContainer extends PIXI.Container {
             this.x = playerMovement.x;
             this.y = playerMovement.y;
             this.rotation = playerMovement.rotation;
+
+            this.showHitBox();
+
             this.emit(this.onMove, playerMovement);
         }
     }
@@ -104,6 +91,17 @@ export class PlayerContainer extends PIXI.Container {
 
     private initSocket() {
         this.on(this.onMove, this.socket.emit.bind(this.socket, 'player-movement'));
+    }
+
+    private showHitBox(): void {
+        this.removeChild(this.hitBox);
+
+        this.hitBox = new PIXI.Graphics();
+        this.hitBox.lineStyle(4, 0xf00f00, 0.6);
+        this.hitBox.drawRect(-16, -16, 32, 32);
+        this.hitBox.rotation = -this.rotation;
+
+        this.addChild(this.hitBox);
     }
 
 }
