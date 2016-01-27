@@ -38,7 +38,7 @@ export class PlayerContainer extends PIXI.Container {
 
     tick(): void {
         this.getMovementInfo();
-        this.getBulletInfo();
+        this.bulletTick();
     }
 
     handleHits(bullets: CollisionDetail[]) {
@@ -46,17 +46,14 @@ export class PlayerContainer extends PIXI.Container {
 
         let collisionDetail: CollisionDetail = {
             height: shipSize,
-            name: 'not sure',
+            name: this.name,
             width: shipSize,
             x: this.x - (shipSize / 2),
             y: this.y - (shipSize / 2)
         };
 
-
-
-
         bullets.forEach((bullet: CollisionDetail) => {
-            if (this.collisionDetection.rectangleHasHit(collisionDetail, bullet)) {
+            if (bullet.name !== this.name && this.collisionDetection.rectangleHasHit(collisionDetail, bullet)) {
                 console.log('hit');
             } else {
                 // console.log('miss');
@@ -64,10 +61,11 @@ export class PlayerContainer extends PIXI.Container {
         });
     }
 
-    private getBulletInfo(): void {
+    private bulletTick() {
         if (this.playerGraphic.isShooting()) {
-            this.emit(this.onShot,
-                this.bulletPhysics.calculateBullet(this.x, this.y, this.rotation));
+            let bulletInfo = this.bulletPhysics.calculateBullet(this.x, this.y, this.rotation);
+            bulletInfo.originId = this.name;
+            this.emit(this.onShot, bulletInfo);
         }
     }
 

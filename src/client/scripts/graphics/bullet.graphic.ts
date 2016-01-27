@@ -4,7 +4,7 @@ export class BulletGraphic extends PIXI.Graphics {
     public owner: string;
     private SIZE = 5;
 
-    constructor(public x: number, public y: number, public rotation: number) {
+    constructor(public x: number, public y: number, public rotation: number, public originId: string) {
         super();
         this.init();
     }

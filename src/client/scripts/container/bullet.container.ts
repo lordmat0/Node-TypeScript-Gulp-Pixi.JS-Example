@@ -32,6 +32,7 @@ export class BulletContainer extends PIXI.Container {
                     bulletGraphic.rotation = bulletMovement.rotation;
 
                     let collisionDetail = <CollisionDetail>bulletMovement;
+                    collisionDetail.name = bulletGraphic.originId;
                     collisionDetail.height = bulletGraphic.height;
                     collisionDetail.width = bulletGraphic.width;
                     bullets.push(collisionDetail);
@@ -59,7 +60,8 @@ export class BulletContainer extends PIXI.Container {
         let x = bulletMovement.x;
         let y = bulletMovement.y;
         let rotation = bulletMovement.rotation;
-        this.addChild(new BulletGraphic(x, y, rotation));
+        let originId = bulletMovement.originId;
+        this.addChild(new BulletGraphic(x, y, rotation, originId));
     }
 
     private inBounds(bulletMovement: BulletMovement): boolean {

@@ -1,5 +1,4 @@
 import {FiringPhysics} from '../physics/firing.physics';
-import {BulletMovement} from '../../../shared/bullet-movement';
 import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
@@ -16,15 +15,6 @@ export class PlayerGraphic extends PIXI.Graphics {
 
     isShooting(): boolean {
         return this.firingPhysics.isShooting();
-    }
-
-    getBulletInfo(): BulletMovement {
-        return {
-            id: this.name,
-            rotation: this.rotation,
-            x: this.x,
-            y: this.y
-        };
     }
 
     private initShape(): void {
