@@ -90,7 +90,12 @@ export class PlayerContainer extends PIXI.Container {
     }
 
     private initSocket() {
+        this.socket.on('connect', this.setId.bind(this));
         this.on(this.onMove, this.socket.emit.bind(this.socket, 'player-movement'));
+    }
+
+    private setId() {
+        this.name = this.socket.id;
     }
 
     private showHitBox(): void {
