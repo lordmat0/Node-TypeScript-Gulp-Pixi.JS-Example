@@ -44,8 +44,6 @@ export class BulletContainer extends PIXI.Container {
                 }
             }
         }
-        // Remove bullets that are out of bounds
-
 
         // emit bullets
         this.emit(this.onTick, bullets);
@@ -88,10 +86,6 @@ export class BulletContainer extends PIXI.Container {
     private removeBullet(name: string): void {
         this.removeChild(this.getChildByName(name));
     }
-
-    // private outOfBounds(bullet: BulletGraphic): boolean {
-    //     return false;
-    // }
 
     private initSocket(): void {
         this.socket.on('bullet-create', this.addBullet.bind(this));
