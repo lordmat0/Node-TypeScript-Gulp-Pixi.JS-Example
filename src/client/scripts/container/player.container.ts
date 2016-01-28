@@ -42,7 +42,7 @@ export class PlayerContainer extends PIXI.Container {
     }
 
     handleHits(bullets: CollisionDetail[]) {
-        let shipSize = this.playerGraphic.SIZE;
+        let shipSize = this.playerGraphic.HIT_BOX_SIZE;
 
         let collisionDetail: CollisionDetail = {
             height: shipSize,

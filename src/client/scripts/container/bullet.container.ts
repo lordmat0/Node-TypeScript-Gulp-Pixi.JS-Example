@@ -26,6 +26,7 @@ export class BulletContainer extends PIXI.Container {
                 let bulletGraphic = <BulletGraphic>this.children[i];
                 let bulletMovement = this.bulletPhysics.calculateBullet(bulletGraphic.x, bulletGraphic.y, bulletGraphic.rotation);
 
+
                 if (this.inBounds(bulletMovement)) {
                     bulletGraphic.x = bulletMovement.x;
                     bulletGraphic.y = bulletMovement.y;

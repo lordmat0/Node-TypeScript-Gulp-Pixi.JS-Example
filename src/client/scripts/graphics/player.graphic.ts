@@ -2,7 +2,7 @@ import {FiringPhysics} from '../physics/firing.physics';
 import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
-    SIZE = 32;
+    HIT_BOX_SIZE = 32;
     private firingPhysics: FiringPhysics;
     private bulletPhysics: BulletPhysics;
 
@@ -17,8 +17,10 @@ export class PlayerGraphic extends PIXI.Graphics {
         return this.firingPhysics.isShooting();
     }
 
+
+
     private initShape(): void {
-        let size = this.SIZE;
+        let size = this.HIT_BOX_SIZE;
 
         this.pivot = new PIXI.Point(size / 2, size / 2);
 
