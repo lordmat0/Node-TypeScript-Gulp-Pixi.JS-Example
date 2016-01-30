@@ -42,7 +42,6 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.pivot = new PIXI.Point(size / 2, size / 2);
 
         let lineStyle = 0x66CCFF;
-        // let fillColor = 0x7F9A65;
 
         this.lineStyle(4, lineStyle, 1);
 

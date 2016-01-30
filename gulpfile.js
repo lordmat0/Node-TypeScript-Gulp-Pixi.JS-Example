@@ -87,12 +87,10 @@ gulp.task('build', function () {
 // watch for any TypeScript or LESS file changes
 // if a file change is detected, run the TypeScript or LESS compile gulp tasks
 gulp.task('watch', function () {
-    gulp.watch('src/**/*.ts', gulp.parallel('build', 'tsLint', browserSync.reload));
-    gulp.watch('tests/**/*.ts', gulp.parallel('buildTests', 'tsLint'));
-    gulp.watch('src/server/styles/**/*.less', gulp.parallel('less'));
+    gulp.watch('src/**/*.ts', gulp.series(gulp.parallel('build', 'tsLint'), browserSync.reload));
+    gulp.watch('tests/**/*.ts', gulp.series(gulp.parallel('buildTests', 'tsLint'), browserSync.reload));
+    gulp.watch('src/server/styles/**/*.less', gulp.series('less', browserSync.stream));
     gulp.watch("src/client/**/*.html").on('change', browserSync.reload);
-    gulp.watch("src/client/**/*.js").on('change', browserSync.reload);
-    gulp.watch("src/client/**/*.css").on('change', browserSync.stream);
 });
 
 gulp.task('watch-test', () => {
