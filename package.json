@@ -3,6 +3,9 @@
     "description": "",
     "version": "0.0.0",
     "private": true,
+    "engines": {
+        "node": "4.2.3"
+    }
     "scripts": {
         "start": "node ./src/server/www.js",
         "test": "mocha ./tests/**/*.js",
