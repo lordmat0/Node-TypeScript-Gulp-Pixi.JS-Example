@@ -15,6 +15,7 @@ Server Side
 Build
 * Typescript
 * TSLint
+* Gulp 3 (TODO update to 4)
 * SASS
 
 Testing
@@ -22,10 +23,12 @@ Testing
 * Chai
 * Supertest
 
-Would be useful for baseing a game!
+Would be useful for basing a game!
 
 TODO:
 More tests for server side
 Tests for client side
+
+Demo: `https://starship-game-demo.herokuapp.com/`
 
 [![Build Status](https://travis-ci.org/lordmat0/Node-TypeScript-Gulp-Pixi.JS-Example.svg?branch=master)](https://travis-ci.org/lordmat0/Node-TypeScript-Gulp-Pixi.JS-Example)
