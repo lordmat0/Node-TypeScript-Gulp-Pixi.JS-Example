@@ -1,5 +1,6 @@
 // Gulp
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var less = require('gulp-less');
 var mocha = require('gulp-mocha');
 var concat = require('gulp-concat');
@@ -41,7 +42,7 @@ gulp.task('clean', (cb) => {
         'src/**/*.css', 'tests/**/*.js', 'tests/**/*.js.map',
         '!src', '!tests'
     ]).then(paths => {
-        console.log('Deleted files and folders:\n', paths.join('\n'));
+        gutil.log('Clean task deleted', paths.length, 'files');
         cb();
     });
 });
