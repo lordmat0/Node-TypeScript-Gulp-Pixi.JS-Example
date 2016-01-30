@@ -2,7 +2,7 @@ import {StarGraphic} from '../graphics/star.graphic';
 import {Random} from '../util/random';
 
 export class StarContainer extends PIXI.Container {
-    constructor(public xStars = 62, public yStars = 62) {
+    constructor(public xStars = 124, public yStars = 124) {
         super();
         this.initStars();
     }
