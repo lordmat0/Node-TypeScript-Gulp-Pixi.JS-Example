@@ -15,7 +15,7 @@ Server Side
 Build
 * Typescript
 * TSLint
-* Gulp 3 (TODO update to 4)
+* Gulp 4
 * SASS
 
 Testing

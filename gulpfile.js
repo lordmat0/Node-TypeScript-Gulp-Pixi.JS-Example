@@ -22,15 +22,13 @@ gulp.task('less', function () {
 });
 
 // run mocha tests in the ./tests folder
-gulp.task('test', test);
-
-function test() {
+gulp.task('test', function () {
     return gulp.src('./tests/**/*.spec.js', {
             read: false
         })
         // gulp-mocha needs filepaths so you can't have any plugins before it
         .pipe(mocha());
-}
+});
 
 gulp.task('clean', (cb) => {
     del(['src/**/*.js', 'src/**/*.js.map',
@@ -42,14 +40,9 @@ gulp.task('clean', (cb) => {
     });
 });
 
-// run browser-sync on for client changes
-gulp.task('browser-sync', ['copy-vendor', 'nodemon', 'watch'], function () {
-    browserSync.init(null, {
-        proxy: "http://localhost:3000",
-        files: ["src/client/**/*.*"],
-        browser: "google-chrome",
-        port: 7000
-    });
+gulp.task('copy-vendor', function () {
+    return gulp.src(config.js)
+        .pipe(gulp.dest('src/client/vendor/'));
 });
 
 // run nodemon on server file changes
@@ -73,11 +66,6 @@ gulp.task('nodemon', function (cb) {
     });
 });
 
-gulp.task('copy-vendor', function () {
-    return gulp.src(config.js)
-        .pipe(gulp.dest('src/client/vendor/'));
-});
-
 // TypeScript build for /src folder, pipes in .d.ts files from typings folder
 //var tsConfigSrc = tsb.create('src/tsconfig.json');
 var tsConfigSrc = ts.createProject('src/tsconfig.json');
@@ -87,6 +75,32 @@ gulp.task('build', function () {
         .pipe(ts(tsConfigSrc))
         .pipe(sourcemaps.write('../src/'))
         .pipe(gulp.dest('src'));
+});
+
+// watch for any TypeScript or LESS file changes
+// if a file change is detected, run the TypeScript or LESS compile gulp tasks
+gulp.task('watch', function () {
+    gulp.watch('src/**/*.ts', gulp.parallel('build', 'tsLint', browserSync.reload));
+    gulp.watch('tests/**/*.ts', gulp.parallel('buildTests', 'tsLint'));
+    gulp.watch('src/server/styles/**/*.less', gulp.parallel('less'));
+    gulp.watch("src/client/**/*.html").on('change', browserSync.reload);
+    gulp.watch("src/client/**/*.js").on('change', browserSync.reload);
+    gulp.watch("src/client/**/*.css").on('change', browserSync.stream);
+});
+
+gulp.task('watch-test', () => {
+    gulp.watch('src/**/*.ts').on('change', gulp.series('build', 'test'));
+    gulp.watch('tests/**/*.ts').on('change', gulp.series('buildTests', 'test'));
+});
+
+// run browser-sync on for client changes
+gulp.task('browser-sync', gulp.series('copy-vendor', 'nodemon', 'watch'), function () {
+    browserSync.init(null, {
+        proxy: "http://localhost:3000",
+        files: ["src/client/**/*.*"],
+        browser: "google-chrome",
+        port: 7000
+    });
 });
 
 // gulp.task('build', ['buildServer', 'buildClient']);
@@ -126,22 +140,5 @@ gulp.task('tsLint', () => {
         }))
 });
 
-// watch for any TypeScript or LESS file changes
-// if a file change is detected, run the TypeScript or LESS compile gulp tasks
-gulp.task('watch', function () {
-    gulp.watch('src/**/*.ts', ['build', 'tsLint']);
-    gulp.watch('tests/**/*.ts', ['buildTests', 'tsLint']);
-    gulp.watch('src/server/styles/**/*.less', ['less']);
-    gulp.watch("src/client/**/*.html").on('change', browserSync.reload);
-    gulp.watch("src/client/**/*.js").on('change', browserSync.reload);
-    gulp.watch("src/client/**/*.css").on('change', browserSync.stream);
-});
-
-gulp.task('watch-test', () => {
-    gulp.watch('src/**/*.ts', ['build']);
-    gulp.watch('tests/**/*.ts', ['buildTests']);
-    gulp.watch(['tests/**/*.js', 'src/**/*.js'], ['test'])
-});
-
-gulp.task('buildAll', ['copy-vendor', 'build', 'buildTests', 'less', 'tsLint'], test);
-gulp.task('default', ['browser-sync']);
+gulp.task('buildAll', gulp.series('clean', gulp.parallel('copy-vendor', 'build', 'buildTests', 'less', 'tsLint'), 'test'));
+gulp.task('default', gulp.series('browser-sync'));
