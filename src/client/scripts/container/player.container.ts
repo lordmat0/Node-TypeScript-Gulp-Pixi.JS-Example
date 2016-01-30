@@ -54,7 +54,7 @@ export class PlayerContainer extends PIXI.Container {
 
         bullets.forEach((bullet: CollisionDetail) => {
             if (bullet.name !== this.name && this.collisionDetection.rectangleHasHit(collisionDetail, bullet)) {
-                console.log('hit');
+                this.playerGraphic.takeDamage();
             } else {
                 // console.log('miss');
             }
