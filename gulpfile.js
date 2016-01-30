@@ -1,23 +1,29 @@
+// Gulp
 var gulp = require('gulp');
 var less = require('gulp-less');
-var path = require('path');
 var mocha = require('gulp-mocha');
-var browserSync = require('browser-sync');
+var concat = require('gulp-concat');
+var insert = require('gulp-insert');
+var tslint = require("gulp-tslint");
+var config = require('./gulpfile.conf');
+var path = require('path');
+var del = require('del');
+
+// Typescript
+var ts = require('gulp-typescript');
+var sourcemaps = require('gulp-sourcemaps');
+
+// Node
 var nodemon = require('gulp-nodemon');
 var cp = require('child_process');
-var ts = require('gulp-typescript');
-var config = require('./gulpfile.conf');
-var concat = require('gulp-concat');
-var tslint = require("gulp-tslint");
-var del = require('del');
-var sourcemaps = require('gulp-sourcemaps');
+var browserSync = require('browser-sync');
 
 gulp.task('less', function () {
     return gulp.src('./src/server/styles/**/*.less')
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
         }))
-        // TODO add a note stating that these are generated
+        .pipe(insert.prepend('/* This file is generated */\n'))
         .pipe(gulp.dest('src/client/css'));
 });
 
@@ -42,6 +48,7 @@ gulp.task('clean', (cb) => {
 
 gulp.task('copy-vendor', function () {
     return gulp.src(config.js)
+        .pipe(insert.prepend('/* this file is generated */\n'))
         .pipe(gulp.dest('src/client/vendor/'));
 });
 
@@ -94,7 +101,7 @@ gulp.task('watch-test', () => {
 });
 
 // run browser-sync on for client changes
-gulp.task('browser-sync', gulp.series('copy-vendor', 'nodemon', 'watch'), function () {
+gulp.task('browser-sync', function () {
     browserSync.init(null, {
         proxy: "http://localhost:3000",
         files: ["src/client/**/*.*"],
@@ -102,24 +109,6 @@ gulp.task('browser-sync', gulp.series('copy-vendor', 'nodemon', 'watch'), functi
         port: 7000
     });
 });
-
-// gulp.task('build', ['buildServer', 'buildClient']);
-//
-// gulp.task('buildServer', function () {
-//     return gulp.src(['typings/**/*.ts', 'src/server/**/*.ts'])
-//         .pipe(sourcemaps.init())
-//         .pipe(ts(tsConfigSrc))
-//         .pipe(sourcemaps.write('../../src/server/source'))
-//         .pipe(gulp.dest('src/server'));
-// });
-//
-// gulp.task('buildClient', function () {
-//     return gulp.src(['typings/**/*.ts', 'src/client/**/*.ts'])
-//         .pipe(sourcemaps.init())
-//         .pipe(ts(tsConfigSrc))
-//         .pipe(sourcemaps.write('../../src/client/source'))
-//         .pipe(gulp.dest('src/client'));
-// });
 
 // TypeScript build for /tests folder, pipes in .d.ts files from typings folder
 // as well as the src/tsd.d.ts which is referenced by tests/tsd.d.ts
@@ -141,4 +130,4 @@ gulp.task('tsLint', () => {
 });
 
 gulp.task('buildAll', gulp.series('clean', gulp.parallel('copy-vendor', 'build', 'buildTests', 'less', 'tsLint'), 'test'));
-gulp.task('default', gulp.series('browser-sync'));
+gulp.task('default', gulp.series('buildAll', 'nodemon', 'watch', 'browser-sync'));
