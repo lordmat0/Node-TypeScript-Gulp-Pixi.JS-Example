@@ -36,6 +36,10 @@ export class PlayerGraphic extends PIXI.Graphics {
         this.healthColor = this.playerDamagePhysics.calculateRecovery(this.healthColor);
     }
 
+    isDead(): boolean {
+        return this.playerDamagePhysics.calculateDamagePercentage(this.healthColor) >= 1;
+    }
+
     private initShape(): void {
         let size = this.HIT_BOX_SIZE;
 
