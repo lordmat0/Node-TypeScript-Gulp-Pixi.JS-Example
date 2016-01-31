@@ -41,8 +41,8 @@ class PlayerSocket {
         return {
             name: this.socket.id,
             rotation: Random.getFloat(0, Math.PI * 2),
-            x: Random.getInt(0, this.renderDetails.stageWidth),
-            y: Random.getInt(0, this.renderDetails.stageHeight),
+            x: Random.getInt(0, this.renderDetails.stageMaxWidth),
+            y: Random.getInt(0, this.renderDetails.stageMaxHeight),
         };
     }
 

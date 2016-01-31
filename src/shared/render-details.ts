@@ -21,11 +21,19 @@ export class RenderDetails {
         return this.y / 2;
     }
 
-    get stageWidth() {
+    get stageMinWidth() {
+        return 0;
+    }
+
+    get stageMaxWidth() {
         return this.stageWidthSize;
     }
 
-    get stageHeight() {
+    get stageMinHeight() {
+        return 0;
+    }
+
+    get stageMaxHeight() {
         return this.stageHeightSize;
     }
 }

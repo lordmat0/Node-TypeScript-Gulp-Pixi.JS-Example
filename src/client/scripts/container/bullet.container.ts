@@ -63,9 +63,9 @@ export class BulletContainer extends PIXI.Container {
 
     private inBounds(bulletMovement: BulletMovement): boolean {
         return bulletMovement.x > this.MIN_X &&
-            bulletMovement.x < this.renderDetails.stageWidth &&
+            bulletMovement.x < this.renderDetails.stageMaxWidth &&
             bulletMovement.y > this.MIN_Y &&
-            bulletMovement.y < this.renderDetails.stageHeight;
+            bulletMovement.y < this.renderDetails.stageMaxHeight;
     }
 
     private addBullets(bullets: BulletMovement[]): void {

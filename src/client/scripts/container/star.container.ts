@@ -9,8 +9,8 @@ export class StarContainer extends PIXI.Container {
     }
 
     private initStars(): void {
-        let xStars = this.renderDetails.stageWidth / 8;
-        let yStars = this.renderDetails.stageHeight / 8;
+        let xStars = this.renderDetails.stageMaxWidth / 8;
+        let yStars = this.renderDetails.stageMaxHeight / 8;
 
         for (let i = 0; i < 8; i++) {
             for (let k = 0; k < 8; k++) {

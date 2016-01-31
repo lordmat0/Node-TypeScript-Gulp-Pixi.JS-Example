@@ -72,8 +72,8 @@ export class PlayerContainer extends PIXI.Container {
     private getMovementInfo(): void {
         let playerMovement = this.playerMovementPhysics.calculate(this.x, this.y, this.rotation);
         if (this.hasMoved(playerMovement)) {
-            this.x = playerMovement.x;
-            this.y = playerMovement.y;
+            this.setX(playerMovement.x);
+            this.setY(playerMovement.y);
             this.rotation = playerMovement.rotation;
 
             // this.showHitBox();
@@ -100,6 +100,17 @@ export class PlayerContainer extends PIXI.Container {
         this.playerGraphic.respawn();
 
         this.emit(this.onMove, startPosition);
+    }
+
+    private setX(x: number) {
+        if (this.renderDetails.stageMaxWidth >= x && this.renderDetails.stageMinWidth <= x) {
+            this.x = x;
+        }
+    }
+    private setY(y: number) {
+        if (this.renderDetails.stageMaxHeight >= y && this.renderDetails.stageMinHeight <= y) {
+            this.y = y;
+        }
     }
 
     private setId() {
