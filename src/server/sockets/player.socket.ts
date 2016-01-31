@@ -29,7 +29,6 @@ class PlayerSocket {
 
     }
 
-
     private disconnect(): void {
         console.log(this.socket.id, 'disconnect');
         this.socket.broadcast.emit('square-deleted', this.socket.id);
@@ -41,8 +40,8 @@ class PlayerSocket {
         return {
             name: this.socket.id,
             rotation: Random.getFloat(0, Math.PI * 2),
-            x: Random.getInt(0, this.renderDetails.stageMaxWidth),
-            y: Random.getInt(0, this.renderDetails.stageMaxHeight),
+            x: Random.getInt(this.renderDetails.stageMinWidth, this.renderDetails.stageMaxWidth),
+            y: Random.getInt(this.renderDetails.stageMinHeight, this.renderDetails.stageMaxHeight),
         };
     }
 

@@ -31,22 +31,4 @@ export class CollisionDetection {
         //Check for a collision on the x axis
         return Math.abs(vx) < combinedHalfWidths && Math.abs(vy) < combinedHalfHeights;
     }
-
-    // isWithin(r1: CollisionDetail, r2: CollisionDetail): boolean {
-    //     /*
-    //        -
-    //       | |
-    //        _
-    //     */
-    //
-    //     let top: CollisionDetail = {
-    //         height: r1.height,
-    //         name: r1.name,
-    //         width: 1,
-    //         x: 0,
-    //         y: 0,
-    //     };
-    //
-    //     return this.rectangleHasHit(top, r2);
-    // }
 }
