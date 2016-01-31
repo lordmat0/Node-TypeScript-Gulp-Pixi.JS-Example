@@ -1,12 +1,15 @@
 import BulletSocket from './bullet.socket';
 import PlayerSocket from './player.socket';
 
-class HandlerSocket {
+class ManagerSocket {
 
     private playerSocket: PlayerSocket;
     private bulletSocket: BulletSocket;
 
     constructor(private io: SocketIO.Server) {
+    }
+
+    init() {
         this.initSocket();
     }
 
@@ -20,4 +23,4 @@ class HandlerSocket {
     }
 }
 
-export default HandlerSocket;
+export default ManagerSocket;
