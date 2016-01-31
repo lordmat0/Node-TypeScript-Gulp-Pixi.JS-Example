@@ -1,4 +1,4 @@
-import {RenderDetails} from '../render-details';
+import {RenderDetails} from '../../../shared/render-details';
 import {StarGraphic} from '../graphics/star.graphic';
 import {Random} from '../util/random';
 

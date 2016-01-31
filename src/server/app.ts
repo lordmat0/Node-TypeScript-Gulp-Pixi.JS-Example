@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 console.log(__dirname);
 app.use(express.static(join(__dirname, '../client/')));
+app.use('/shared', express.static(join(__dirname, '../shared/')));
 
 // Paths
 app.use('/', index(socket.io));

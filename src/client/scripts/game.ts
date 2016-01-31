@@ -5,7 +5,7 @@ import {StarContainer} from './container/star.container';
 import {BulletContainer} from './container/bullet.container';
 import {WorldContainer} from './container/world.container';
 import {PlayerContainer} from './container/player.container';
-import {RenderDetails} from './render-details';
+import {RenderDetails} from '../../shared/render-details';
 import {PlayerMovement} from '../../shared/player-movement';
 
 export class Game {
@@ -26,7 +26,6 @@ export class Game {
     }
 
     state(): void {
-
         this.playerContainer.tick();
 
         this.worldContainer.tick();

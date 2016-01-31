@@ -1,7 +1,7 @@
 import {CollisionDetail} from '../../../shared/collision-detail';
 import {CollisionDetection} from '../util/collision-detection';
 import {BulletPhysics} from '../physics/bullet.physics';
-import {RenderDetails} from '../render-details';
+import {RenderDetails} from '../../../shared/render-details';
 import {PlayerMovementPhysics} from '../physics/player-movement.physics';
 import {PlayerGraphic} from '../graphics/player.graphic';
 import {PlayerMovement} from '../../../shared/player-movement';
@@ -27,11 +27,6 @@ export class PlayerContainer extends PIXI.Container {
         this.playerGraphic = new PlayerGraphic();
 
         this.collisionDetection = new CollisionDetection();
-
-        this.x = renderDetails.halfWidth;
-        this.y = renderDetails.halfHeight;
-
-        this.addChild(this.playerGraphic);
 
         this.hitBox = new PIXI.Graphics();
     }
@@ -73,7 +68,6 @@ export class PlayerContainer extends PIXI.Container {
 
     private getMovementInfo(): void {
         let playerMovement = this.playerMovementPhysics.calculate(this.x, this.y, this.rotation);
-
         if (this.hasMoved(playerMovement)) {
             this.x = playerMovement.x;
             this.y = playerMovement.y;
@@ -91,7 +85,16 @@ export class PlayerContainer extends PIXI.Container {
 
     private initSocket() {
         this.socket.on('connect', this.setId.bind(this));
+        this.socket.on('player-start-position', this.setStartPosition.bind(this));
         this.on(this.onMove, this.socket.emit.bind(this.socket, 'player-movement'));
+    }
+
+    private setStartPosition(startPosition: PlayerMovement) {
+        this.x = startPosition.x;
+        this.y = startPosition.y;
+        this.rotation = startPosition.rotation;
+        this.addChild(this.playerGraphic);
+        this.emit(this.onMove, startPosition);
     }
 
     private setId() {

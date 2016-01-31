@@ -1,10 +1,14 @@
+import {Random} from '../../shared/util/random';
 import {PlayerMovement} from '../../shared/player-movement';
+import {RenderDetails} from '../../shared/render-details';
 
 class PlayerSocket {
 
     private static squares: { [id: string]: PlayerMovement } = {};
+    private renderDetails: RenderDetails;
 
     constructor(private socket: SocketIO.Socket) {
+        this.renderDetails = new RenderDetails();
         this.initSocket();
         this.initEvents();
     }
@@ -32,10 +36,12 @@ class PlayerSocket {
 
         let square: PlayerMovement = {
             name: this.socket.id,
-            rotation: 90,
-            x: -50,
-            y: -50,
+            rotation: Random.getFloat(0, Math.PI * 2),
+            x: Random.getInt(0, this.renderDetails.stageWidth),
+            y: Random.getInt(0, this.renderDetails.stageHeight),
         };
+
+        this.socket.emit('player-start-position', square);
 
         PlayerSocket.squares[this.socket.id] = square;
 

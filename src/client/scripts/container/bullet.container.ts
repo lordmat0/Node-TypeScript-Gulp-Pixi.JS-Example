@@ -1,4 +1,4 @@
-import {RenderDetails} from '../render-details';
+import {RenderDetails} from '../../../shared/render-details';
 import {CollisionDetail} from '../../../shared/collision-detail';
 import {BulletGraphic} from '../graphics/bullet.graphic';
 import {BulletMovement} from '../../../shared/bullet-movement';
@@ -24,7 +24,6 @@ export class BulletContainer extends PIXI.Container {
             if (this.children.hasOwnProperty(i)) {
                 let bulletGraphic = <BulletGraphic>this.children[i];
                 let bulletMovement = this.bulletPhysics.calculateBullet(bulletGraphic.x, bulletGraphic.y, bulletGraphic.rotation);
-
 
                 if (this.inBounds(bulletMovement)) {
                     bulletGraphic.x = bulletMovement.x;

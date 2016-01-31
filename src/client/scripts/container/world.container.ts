@@ -1,4 +1,4 @@
-import {RenderDetails} from '../render-details';
+import {RenderDetails} from '../../../shared/render-details';
 import {PlayerMovement} from '../../../shared/player-movement';
 import {ZoomPhysics} from '../physics/zoom.physics';
 
