@@ -4,6 +4,8 @@ import {BulletPhysics} from '../physics/bullet.physics';
 
 export class PlayerGraphic extends PIXI.Graphics {
     HIT_BOX_SIZE = 32;
+    private STARTING_HEALTH_COLOR = 0x003300;
+
     private firingPhysics: FiringPhysics;
     private bulletPhysics: BulletPhysics;
     private playerDamagePhysics: PlayerDamagePhysics;
@@ -12,12 +14,17 @@ export class PlayerGraphic extends PIXI.Graphics {
 
     constructor() {
         super();
-        this.healthColor = 0x003300;
+        this.healthColor = this.STARTING_HEALTH_COLOR;
         this.initShape();
 
         this.firingPhysics = new FiringPhysics();
         this.bulletPhysics = new BulletPhysics();
         this.playerDamagePhysics = new PlayerDamagePhysics();
+    }
+
+    respawn() {
+        this.healthColor = this.STARTING_HEALTH_COLOR;
+        this.redrawHitBox();
     }
 
     isShooting(): boolean {
@@ -26,18 +33,22 @@ export class PlayerGraphic extends PIXI.Graphics {
 
     takeDamage(): void {
         this.healthColor = this.playerDamagePhysics.calculateHit(this.healthColor);
-
-        this.beginFill(this.healthColor);
-        this.drawRect(0, 0, this.HIT_BOX_SIZE, this.HIT_BOX_SIZE);
-        this.endFill();
+        this.redrawHitBox();
     }
 
     recoverHealth(): void {
         this.healthColor = this.playerDamagePhysics.calculateRecovery(this.healthColor);
+        this.redrawHitBox();
     }
 
     isDead(): boolean {
         return this.playerDamagePhysics.calculateDamagePercentage(this.healthColor) >= 1;
+    }
+
+    private redrawHitBox() {
+        this.beginFill(this.healthColor);
+        this.drawRect(0, 0, this.HIT_BOX_SIZE, this.HIT_BOX_SIZE);
+        this.endFill();
     }
 
     private initShape(): void {

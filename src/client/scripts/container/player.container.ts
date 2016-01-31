@@ -50,12 +50,15 @@ export class PlayerContainer extends PIXI.Container {
         bullets.forEach((bullet: CollisionDetail) => {
             if (bullet.name !== this.name && this.collisionDetection.rectangleHasHit(collisionDetail, bullet)) {
                 this.playerGraphic.takeDamage();
+
+                if (this.playerGraphic.isDead()) {
+                    this.socket.emit('player-dead', bullet.name);
+                    return true;
+                }
             }
         });
 
-        if (this.playerGraphic.isDead()) {
-            alert('oh no you died');
-        }
+
     }
 
     private bulletTick() {
@@ -73,7 +76,7 @@ export class PlayerContainer extends PIXI.Container {
             this.y = playerMovement.y;
             this.rotation = playerMovement.rotation;
 
-            this.showHitBox();
+            // this.showHitBox();
 
             this.emit(this.onMove, playerMovement);
         }
@@ -94,6 +97,8 @@ export class PlayerContainer extends PIXI.Container {
         this.y = startPosition.y;
         this.rotation = startPosition.rotation;
         this.addChild(this.playerGraphic);
+        this.playerGraphic.respawn();
+
         this.emit(this.onMove, startPosition);
     }
 
