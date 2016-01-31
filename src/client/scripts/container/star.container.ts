@@ -1,6 +1,6 @@
 import {RenderDetails} from '../../../shared/render-details';
 import {StarGraphic} from '../graphics/star.graphic';
-import {Random} from '../util/random';
+import {Random} from '../../../shared/util/random';
 
 export class StarContainer extends PIXI.Container {
     constructor(private renderDetails: RenderDetails) {
