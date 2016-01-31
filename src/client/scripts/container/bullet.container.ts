@@ -1,3 +1,4 @@
+import {RenderDetails} from '../render-details';
 import {CollisionDetail} from '../../../shared/collision-detail';
 import {BulletGraphic} from '../graphics/bullet.graphic';
 import {BulletMovement} from '../../../shared/bullet-movement';
@@ -8,12 +9,10 @@ export class BulletContainer extends PIXI.Container {
 
     private bulletPhysics: BulletPhysics;
 
-    private MIN_X = -1000;
-    private MIN_Y = -1000;
-    private MAX_X = 1000;
-    private MAX_Y = 1000;
+    private MIN_X = 0;
+    private MIN_Y = 0;
 
-    constructor(private socket: SocketIOClient.Socket) {
+    constructor(private renderDetails: RenderDetails, private socket: SocketIOClient.Socket) {
         super();
         this.initSocket();
         this.bulletPhysics = new BulletPhysics();
@@ -65,9 +64,9 @@ export class BulletContainer extends PIXI.Container {
 
     private inBounds(bulletMovement: BulletMovement): boolean {
         return bulletMovement.x > this.MIN_X &&
-            bulletMovement.x < this.MAX_X &&
+            bulletMovement.x < this.renderDetails.stageWidth &&
             bulletMovement.y > this.MIN_Y &&
-            bulletMovement.y < this.MAX_Y;
+            bulletMovement.y < this.renderDetails.stageHeight;
     }
 
     private addBullets(bullets: BulletMovement[]): void {

@@ -47,8 +47,8 @@ export class Game {
         this.worldContainer = new WorldContainer(this.renderDetails);
         this.playerContainer = new PlayerContainer(this.renderDetails, this.socket);
         this.enemyContainer = new EnemyContainer(this.socket);
-        this.bulletContainer = new BulletContainer(this.socket);
-        this.starContainer = new StarContainer();
+        this.bulletContainer = new BulletContainer(this.renderDetails, this.socket);
+        this.starContainer = new StarContainer(this.renderDetails);
     }
 
     private initEvents(): void {

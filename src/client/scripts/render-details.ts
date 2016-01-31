@@ -1,6 +1,9 @@
 export class RenderDetails {
-    x: number = 512;
-    y: number = 512;
+    private x = 512;
+    private y = 512;
+
+    private stageWidthSize = 1000;
+    private stageHeightSize = 1000;
 
     get width(): number {
         return this.x;
@@ -16,5 +19,13 @@ export class RenderDetails {
 
     get halfHeight(): number {
         return this.y / 2;
+    }
+
+    get stageWidth() {
+        return this.stageWidthSize;
+    }
+
+    get stageHeight() {
+        return this.stageHeightSize;
     }
 }
