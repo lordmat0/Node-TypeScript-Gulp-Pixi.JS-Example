@@ -11,7 +11,7 @@ export class ScoreBoardContainer extends PIXI.Container {
         super();
         this.initControls();
         this.initSocket();
-        this.alpha = 1;
+        this.alpha = 0;
     }
 
     move(x: number, y: number): void {
@@ -19,10 +19,9 @@ export class ScoreBoardContainer extends PIXI.Container {
         this.y = y - (this.render.height / 2);
     }
 
-    updateScores(scores: ScoreDetail[]): void {
-        // First try just removing all the elements and updating the score
-        if (scores.length) {
-            this.removeChildren(0, this.children.length - 1);
+    updateScores(scores: { [id: string]: ScoreDetail }): void {
+        if (this.children.length) {
+            this.removeChildren(0, this.children.length);
         }
 
         let textHeader = new PIXI.Text('Scores', {
@@ -33,20 +32,25 @@ export class ScoreBoardContainer extends PIXI.Container {
         textHeader.position.set(20, 15);
         this.addChild(textHeader);
 
-        console.log(scores.length);
+        let scoreArray: ScoreDetail[] = Object.keys(scores)
+            .map((x) => {
+                return scores[x];
+            })
+            .sort((e1, e2) => {
+                if (e1.kills === e2.kills) {
+                    return e1.deaths - e2.deaths;
+                }
+                return e2.kills - e1.kills;
+            });
 
-        let offset = 1;
-        for (let i in scores) {
-            if (!scores.hasOwnProperty(i)) {
-                continue;
-            }
+        for (let i = 0; i < scoreArray.length; i++) {
 
-            let scoreMessage = `${scores[i].id} - Kills: ${scores[i].kills} - Deaths: ${scores[i].deaths}`;
+            let scoreMessage = `${scoreArray[i].id} - Kills: ${scoreArray[i].kills} - Deaths: ${scoreArray[i].deaths}`;
             let text = new PIXI.Text(scoreMessage, {
                 fill: 'white',
                 font: '16px sans-serif'
             });
-            text.position.set(20, 40 + (30 * offset++));
+            text.position.set(20, 70 + (30 * i));
             this.addChild(text);
         }
 
