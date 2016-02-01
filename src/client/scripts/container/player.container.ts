@@ -50,6 +50,7 @@ export class PlayerContainer extends PIXI.Container {
         bullets.forEach((bullet: CollisionDetail) => {
             if (bullet.name !== this.name && this.collisionDetection.rectangleHasHit(collisionDetail, bullet)) {
                 this.playerGraphic.takeDamage();
+                console.log(bullet.name);
 
                 if (this.playerGraphic.isDead()) {
                     this.socket.emit('player-dead', bullet.name);

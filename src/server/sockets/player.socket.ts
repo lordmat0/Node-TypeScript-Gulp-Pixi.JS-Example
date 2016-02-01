@@ -26,7 +26,6 @@ class PlayerSocket {
 
         let square = this.generatePosition();
         this.socket.emit('player-start-position', square);
-
     }
 
     private disconnect(): void {
