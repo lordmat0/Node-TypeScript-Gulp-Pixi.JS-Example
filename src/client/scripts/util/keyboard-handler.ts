@@ -12,7 +12,7 @@ export class KeyboardHandler {
         window.addEventListener('keyup', this.upHandler.bind(this), false);
     }
 
-    downHandler(event) {
+    private downHandler(event) {
         if (event.keyCode === this.keycode) {
             if (this.isUp && this.press) {
                 this.press();
@@ -24,7 +24,7 @@ export class KeyboardHandler {
         event.preventDefault();
     }
 
-    upHandler(event) {
+    private upHandler(event) {
         if (event.keyCode === this.keycode) {
             if (this.isDown && this.release) {
                 this.release();

@@ -115,7 +115,7 @@ export class PlayerContainer extends PIXI.Container {
     }
 
     private setId() {
-        this.name = this.socket.id;
+        this.name = '/#' + this.socket.id;
     }
 
     private showHitBox(): void {

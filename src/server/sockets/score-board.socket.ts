@@ -10,15 +10,14 @@ class ScoreBoardSocket {
     }
 
     private playerDeath(id: string) {
-        console.log(this.socket.id, id);
-        console.log(ScoreBoardSocket.scores);
+        console.log(id, 'Killed ', this.socket.id);
 
         ScoreBoardSocket.scores[this.socket.id].deaths++;
-        // Why is this missing /# ?
-        ScoreBoardSocket.scores['/#' + id].kills++;
+        ScoreBoardSocket.scores[id].kills++;
+
+        console.log(ScoreBoardSocket.scores);
 
         this.io.emit('score-board', ScoreBoardSocket.scores);
-        console.log('score-board emit');
     }
 
     private disconnect() {

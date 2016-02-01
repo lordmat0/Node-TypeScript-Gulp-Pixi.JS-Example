@@ -1,3 +1,4 @@
+import {ScoreBoardContainer} from './container/score-board.container';
 import {CollisionDetail} from '../../shared/collision-detail';
 import {BulletMovement} from '../../shared/bullet-movement';
 import {EnemyContainer} from './container/enemy.container';
@@ -15,6 +16,7 @@ export class Game {
     private worldContainer: WorldContainer;
     private bulletContainer: BulletContainer;
     private starContainer: StarContainer;
+    private scoreBoardContainer: ScoreBoardContainer;
 
     private socket: SocketIOClient.Socket;
 
@@ -45,6 +47,7 @@ export class Game {
 
         this.worldContainer = new WorldContainer(this.renderDetails);
         this.playerContainer = new PlayerContainer(this.renderDetails, this.socket);
+        this.scoreBoardContainer = new ScoreBoardContainer(this.renderDetails, this.socket);
         this.enemyContainer = new EnemyContainer(this.socket);
         this.bulletContainer = new BulletContainer(this.renderDetails, this.socket);
         this.starContainer = new StarContainer(this.renderDetails);
@@ -53,6 +56,7 @@ export class Game {
     private initEvents(): void {
         this.playerContainer.on(this.playerContainer.onMove, (movement: PlayerMovement) => {
             this.worldContainer.scaleOut(movement);
+            this.scoreBoardContainer.move(movement.x, movement.y);
         });
 
         this.playerContainer.on(this.playerContainer.onShot, (bullet: BulletMovement) => {
@@ -69,6 +73,7 @@ export class Game {
         this.worldContainer.addChild(this.playerContainer);
         this.worldContainer.addChild(this.enemyContainer);
         this.worldContainer.addChild(this.bulletContainer);
+        this.worldContainer.addChild(this.scoreBoardContainer);
     }
 
 }

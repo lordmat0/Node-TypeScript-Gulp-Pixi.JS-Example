@@ -5,7 +5,7 @@ import {KeyboardCode} from '../util/keyboard-code';
 export class FiringPhysics {
 
     private bulletsOut = 0;
-    private MAX_BULLETS_OUT = 12000;
+    private MAX_BULLETS_OUT = 1200;
     private spaceController: KeyboardHandler;
 
     constructor() {
