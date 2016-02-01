@@ -33,6 +33,8 @@ export class Game {
         this.worldContainer.tick();
 
         this.bulletContainer.tick();
+
+        this.scoreBoardContainer.tick();
     }
 
     get stage(): PIXI.Container {

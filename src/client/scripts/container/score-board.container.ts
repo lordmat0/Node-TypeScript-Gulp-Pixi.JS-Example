@@ -1,3 +1,4 @@
+import {FadePhysics} from '../physics/fade.physics';
 import {RenderDetails} from '../../../shared/render-details';
 import {KeyboardHandler} from '../util/keyboard-handler';
 import {KeyboardCode} from '../util/keyboard-code';
@@ -7,11 +8,23 @@ export class ScoreBoardContainer extends PIXI.Container {
 
     private tabController: KeyboardHandler;
 
+    private fadePhysics: FadePhysics;
+
     constructor(private render: RenderDetails, private socket: SocketIOClient.Socket) {
         super();
         this.initControls();
         this.initSocket();
+        this.fadePhysics = new FadePhysics(1, 0, 0.2, 0.1);
+
         this.alpha = 0;
+    }
+
+    tick(): void {
+        if (this.tabController.isUp) {
+            this.alpha = this.fadePhysics.fadeOut(this.alpha);
+        } else if (this.tabController.isDown) {
+            this.alpha = this.fadePhysics.fadeIn(this.alpha);
+        }
     }
 
     move(x: number, y: number): void {
@@ -43,6 +56,7 @@ export class ScoreBoardContainer extends PIXI.Container {
                 return e2.kills - e1.kills;
             });
 
+
         for (let i = 0; i < scoreArray.length; i++) {
 
             let scoreMessage = `${scoreArray[i].id} - Kills: ${scoreArray[i].kills} - Deaths: ${scoreArray[i].deaths}`;
@@ -58,13 +72,6 @@ export class ScoreBoardContainer extends PIXI.Container {
 
     private initControls() {
         this.tabController = new KeyboardHandler(KeyboardCode.TAB);
-        this.tabController.press = () => {
-            this.alpha = 0.8;
-        };
-
-        this.tabController.release = () => {
-            this.alpha = 0;
-        };
     }
 
     private initSocket() {

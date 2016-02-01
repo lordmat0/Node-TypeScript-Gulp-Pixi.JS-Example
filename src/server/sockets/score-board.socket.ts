@@ -21,8 +21,8 @@ class ScoreBoardSocket {
     }
 
     private disconnect() {
-        // no-op
         delete ScoreBoardSocket.scores[this.socket.id];
+        this.io.emit('score-board', ScoreBoardSocket.scores);
     }
 
     private initSocket(): void {
@@ -32,7 +32,7 @@ class ScoreBoardSocket {
             kills: 0
         };
 
-        this.socket.emit('score-board', ScoreBoardSocket.scores);
+        this.io.emit('score-board', ScoreBoardSocket.scores);
     }
 
     private initEvents(): void {
