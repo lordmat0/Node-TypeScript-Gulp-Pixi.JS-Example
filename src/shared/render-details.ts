@@ -1,4 +1,7 @@
 export class RenderDetails {
+
+    render: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
+
     private screenWidth: number;
     private screenHeight: number;
 
@@ -10,6 +13,14 @@ export class RenderDetails {
             // Window is undefined on node
             this.screenWidth = window && window.innerWidth || 500;
             this.screenHeight = window && window.innerHeight || 500;
+
+            window.onresize = () => {
+                this.screenWidth = window && window.innerWidth || 500;
+                this.screenHeight = window && window.innerHeight || 500;
+                if (this.render) {
+                    this.render.resize(this.screenWidth, this.screenHeight);
+                }
+            };
         } catch (_) {
             this.screenWidth = 500;
             this.screenHeight = 500;

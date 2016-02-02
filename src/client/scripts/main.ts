@@ -4,6 +4,7 @@ import {Game} from './game';
 // Create the renderer
 let renderDetails = new RenderDetails();
 let renderer = PIXI.autoDetectRenderer(renderDetails.width, renderDetails.height);
+renderDetails.render = renderer;
 
 let canvas = document.getElementById('canvas');
 canvas.appendChild(renderer.view);
