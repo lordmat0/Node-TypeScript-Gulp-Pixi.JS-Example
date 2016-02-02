@@ -1,24 +1,35 @@
 export class RenderDetails {
-    private x = 512;
-    private y = 512;
+    private screenWidth: number;
+    private screenHeight: number;
 
     private stageWidthSize = 5000;
     private stageHeightSize = 5000;
 
+    constructor() {
+        try {
+            // Window is undefined on node
+            this.screenWidth = window && window.innerWidth || 500;
+            this.screenHeight = window && window.innerHeight || 500;
+        } catch (_) {
+            this.screenWidth = 500;
+            this.screenHeight = 500;
+        }
+    }
+
     get width(): number {
-        return this.x;
+        return this.screenWidth;
     }
 
     get height(): number {
-        return this.y;
+        return this.screenHeight;
     }
 
     get halfWidth(): number {
-        return this.x / 2;
+        return this.screenWidth / 2;
     }
 
     get halfHeight(): number {
-        return this.y / 2;
+        return this.screenHeight / 2;
     }
 
     get stageMinWidth() {

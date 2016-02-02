@@ -12,10 +12,11 @@ let game = new Game(renderDetails);
 
 gameLoop();
 
-function gameLoop() {
+function gameLoop(ts?: number) {
     requestAnimationFrame(gameLoop);
-
     game.state();
+
+    // console.log(ts);
 
     renderer.render(game.stage);
 }
