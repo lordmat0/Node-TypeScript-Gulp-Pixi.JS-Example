@@ -16,9 +16,9 @@ export class PlayerDamagePhysics {
 
     calculateHit(currentColour: number): number {
         if (currentColour >= 0x000000 && currentColour < 0x00ff00) {
-            currentColour += 0x000300;
+            currentColour += 0x003300;
         } else if (currentColour === 0x00ff00 || currentColour < 0xffffff) {
-            currentColour += 0x030003;
+            currentColour += 0x330033;
         }
 
         return currentColour;
@@ -26,9 +26,9 @@ export class PlayerDamagePhysics {
 
     calculateRecovery(currentColour: number): number {
         if (currentColour >= 0x000000 && currentColour < 0x00ff00) {
-            currentColour -= 0x001100;
+            currentColour -= 0x003300;
         } else if (currentColour === 0x00ff00 || currentColour < 0xffffff) {
-            currentColour -= 0x110011;
+            currentColour -= 0x330033;
         }
 
         return currentColour;
